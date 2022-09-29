@@ -6,16 +6,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 import 'package:flutter_app/globals.dart' as globals;
 
 import 'package:auto_route/auto_route.dart';
 
 class ConfirmPass extends StatefulWidget {
   final String userPhone;
-  
-  const ConfirmPass({required this.userPhone});
 
+  const ConfirmPass({required this.userPhone});
 
   @override
   State<ConfirmPass> createState() => _ConfirmPassState();
@@ -28,7 +26,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
   final _controller4 = TextEditingController();
   final _controller5 = TextEditingController();
   final _controller6 = TextEditingController();
-  var _verificationCode;
+  String _verificationCode = '';
   var name = '';
   var all = '';
   final node1 = FocusNode();
@@ -445,26 +443,29 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                     all = _controller1.text +
                                         _controller2.text +
                                         _controller3.text +
-                                        _controller4.text + 
+                                        _controller4.text +
                                         _controller5.text +
                                         _controller6.text;
                                   });
                                   print(all);
                                   await FirebaseAuth.instance
-                                  .signInWithCredential(PhoneAuthProvider.credential(
-                                      verificationId: _verificationCode,
-                                      smsCode: all))
-                                  .then((value) => {
-                                    if (value.user != null)
-                                      {
-                                        print('пользователь вошел в систему 2'),
-                                        AutoRouter.of(context).pushNamed('/reg')
-                                      }
-                                    else
-                                      {
-                                        print('test поьзователя 2'),
-                                      }
-                                    });
+                                      .signInWithCredential(
+                                          PhoneAuthProvider.credential(
+                                              verificationId: _verificationCode,
+                                              smsCode: all))
+                                      .then((value) => {
+                                            if (value.user != null)
+                                              {
+                                                print(
+                                                    'пользователь вошел в систему 2'),
+                                                AutoRouter.of(context)
+                                                    .pushNamed('/reg')
+                                              }
+                                            else
+                                              {
+                                                print('test поьзователя 2'),
+                                              }
+                                          });
                                 },
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.transparent),
@@ -525,7 +526,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
         ));
   }
 
-    _verifyPhone() async {
+  _verifyPhone() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: widget.userPhone,
       verificationCompleted: (PhoneAuthCredential credential) async {

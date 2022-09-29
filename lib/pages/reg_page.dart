@@ -9,6 +9,8 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:auto_route/auto_route.dart';
 
+import '../services/database.dart';
+
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -31,7 +33,6 @@ class _RegState extends State<Reg> {
   final _controllerClass = TextEditingController();
   final _controllerSchool = TextEditingController();
 
-  // Антификация по номеру телефона, но из за ошибки при подлючении firebase_core, пока не работает.
   // Future signUp() async{
   //   var _phoneNumber = _controllerNumb.text.trim();
   //   var _Name = _controllerName.text.trim();
@@ -190,10 +191,10 @@ class _RegState extends State<Reg> {
                               _input('Имя', _controllerName),
                               _input('Отчество', _controllerPatronymic),
                               _input('Дата рождения', _controllerBirthday),
-                              // _input('Населенный пункт', _controllerCity),
-                              // _input('Учебное заведение', _controllerSchool),
                               _input('Класс', _controllerClass),
                               _input('Телефон', _controllerNumb),
+                              // _input('Населенный пункт', _controllerCity),
+                              // _input('Учебное заведение', _controllerSchool),
                               //Кнопка
                               Container(
                                 width: width1,
@@ -220,16 +221,24 @@ class _RegState extends State<Reg> {
                                 child: ElevatedButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Processing Data')),
-                                        );
-                                        AutoRouter.of(context).pushNamed('/home');
-                                        // signUp();
+                                        DateBase().addUser(Users(
+                                          name: _controllerName.text,
+                                          surname: _controllerSurname.text,
+                                          patronymic:
+                                              _controllerPatronymic.text,
+                                          birthday: int.parse(
+                                              _controllerBirthday.text),
+                                          schoolClass:
+                                              int.parse(_controllerClass.text),
+                                          phoneNumber:
+                                              int.parse(_controllerNumb.text),
+                                        ));
+                                        print('OK');
+                                        AutoRouter.of(context)
+                                            .pushNamed('/home');
                                       } else {
-                                        AutoRouter.of(context).pushNamed('/home');
-                                        print('добваить route');
+                                        print('validation failed');
+                                        // AutoRouter.of(context).pushNamed('/home');
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
