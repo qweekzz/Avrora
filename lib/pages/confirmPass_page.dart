@@ -459,7 +459,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                                 print(
                                                     'пользователь вошел в систему 2'),
                                                 AutoRouter.of(context)
-                                                    .pushNamed('/reg')
+                                                    .pushNamed('/')
                                               }
                                             else
                                               {

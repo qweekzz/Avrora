@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app/services/auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_file/open_file.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 
+import '../services/counterBloc.dart';
 import '../services/database.dart';
+import '../services/storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,14 +41,28 @@ class _HomePageState extends State<HomePage> {
   // var a = FirebaseAuth.instance.currentUser?.uid;
   // var tes;
   // bool bo = tes;
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
 
   static const prifile = AssetImage('images/prof2.png');
+  List userList = [];
+
+  //убрать в отдельный файл
+  void openFile(PlatformFile file) {
+    OpenFile.open(file.path!);
+  }
 
   late List<Widget> _contentInHomePage = <Widget>[
     // Page 1
-    _NullProfile(),
+    Text('data'),
+    // _NullProfile(),
     // Page 2
-    _register(context),
+    Text('2'),
+    // _register(context),
     // Page 3
     _selectPage(context)
   ];
@@ -166,24 +186,26 @@ class _HomePageState extends State<HomePage> {
                             // color: Colors.white,
                             child: ElevatedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    DateBase().addUser(Users(
-                                      name: _controllerName.text,
-                                      surname: _controllerSurname.text,
-                                      patronymic: _controllerPatronymic.text,
-                                      birthday:
-                                          int.parse(_controllerBirthday.text),
-                                      schoolClass:
-                                          int.parse(_controllerClass.text),
-                                      phoneNumber:
-                                          int.parse(_controllerNumb.text),
-                                    ));
-                                    print('OK');
-                                    // AutoRouter.of(context).pushNamed('/home');
-                                  } else {
-                                    print('validation failed');
-                                    // AutoRouter.of(context).pushNamed('/home');
-                                  }
+                                  // if (_formKey.currentState!.validate()) {
+                                  //   DateBase().addUser(Users(
+                                  //     name: _controllerName.text,
+                                  //     nickName: _controllerName.text,
+                                  //     city: _controllerCity.text,
+                                  //     school: _controllerSchool.text,
+                                  //     birthday:
+                                  //         int.parse(_controllerBirthday.text),
+                                  //     age: int.parse(_controllerBirthday.text),
+                                  //     schoolClass:
+                                  //         int.parse(_controllerClass.text),
+                                  //     phoneNumber:
+                                  //         int.parse(_controllerNumb.text),
+                                  //   ));
+                                  //   print('OK');
+                                  //   // AutoRouter.of(context).pushNamed('/home');
+                                  // } else {
+                                  //   print('validation failed');
+                                  //   // AutoRouter.of(context).pushNamed('/home');
+                                  // }
                                 },
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.transparent),
@@ -222,375 +244,423 @@ class _HomePageState extends State<HomePage> {
 
   // Страница заполненного профили (сделать динамику)
   Widget _profilePage() {
-    return Scaffold(
-      body: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+    return BlocProvider<counterBloc>(
+      create: (BuildContext context) => counterBloc(),
+      child:
+          BlocBuilder<counterBloc, int>(builder: (BuildContext context, state) {
+        return Scaffold(
+          body: Stack(
+            alignment: AlignmentDirectional.center,
             children: [
-              Flexible(
-                flex: 6,
-                child: Container(
-                  // color: Colors.amber,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 108, 14, 164),
-                        Color.fromARGB(255, 153, 28, 172)
-                      ],
-                      end: Alignment.bottomRight,
-                      begin: Alignment.topLeft,
-                    ),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: prifile,
-                          width: 100,
-                          // height: 180,
-                          // fit: BoxFit.cover,
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 25)),
-                        Text(
-                          'Nickname',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 7,
-                child: Column(
-                  children: [
-                    Padding(padding: EdgeInsets.fromLTRB(0, 75, 0, 0)),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: Offset(0, 3),
-                            )
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 6,
+                    child: Container(
+                      // color: Colors.amber,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 108, 14, 164),
+                            Color.fromARGB(255, 153, 28, 172)
                           ],
+                          end: Alignment.bottomRight,
+                          begin: Alignment.topLeft,
                         ),
-                        child: Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    "Информация",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.house,
-                                            color: Colors.blue,
-                                            size: 50,
-                                          )
-                                        ],
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                await DateBase().updateAva();
+                                await DateBase().addImageToStorage();
+                                BlocProvider.of<counterBloc>(context)
+                                    .add(counterIncEvent());
+                              },
+                              child: StreamBuilder(
+                                stream:
+                                    DateBase().downloadURLStream(ava, context),
+                                initialData: Image(
+                                  image: prifile,
+                                  width: 100,
+                                  // height: 180,
+                                  // fit: BoxFit.cover,
+                                ),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done &&
+                                      snapshot.hasData) {
+                                    // print(snapshot);
+                                    return CircleAvatar(
+                                      radius: 50,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image:
+                                                  NetworkImage(snapshot.data!),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
                                       ),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10)),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Адрес',
-                                                style: TextStyle(
-                                                    color: Colors.black38,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 2)),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Генерала Горбатого 7/5',
-                                                style: TextStyle(fontSize: 14),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                    );
+                                  } else {
+                                    return Image(
+                                      image: prifile,
+                                      width: 100,
+                                      // height: 180,
+                                      // fit: BoxFit.cover,
+                                    );
+                                  }
+                                },
                               ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.phone,
-                                            color: Colors.green,
-                                            size: 50,
-                                          )
-                                        ],
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10)),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Телефон',
-                                                style: TextStyle(
-                                                    color: Colors.black38,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 2)),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                '+7 (982) 445 38 85',
-                                                style: TextStyle(fontSize: 14),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.school,
-                                            color: Colors.red,
-                                            size: 50,
-                                          )
-                                        ],
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10)),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Учебное заведение',
-                                                style: TextStyle(
-                                                    color: Colors.black38,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 2)),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Генерала Горбатого 7/5',
-                                                style: TextStyle(fontSize: 14),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.science,
-                                            color: Colors.orange,
-                                            size: 50,
-                                          )
-                                        ],
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10)),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Последний курс',
-                                                style: TextStyle(
-                                                    color: Colors.black38,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 2)),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Биология 10-11 класс',
-                                                style: TextStyle(fontSize: 14),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            Padding(padding: EdgeInsets.only(top: 25)),
+                            DateBase().getUserData(
+                                'Nickname', Colors.white, 18, FontWeight.w400),
+                            Text("$state"),
+                          ],
                         ),
                       ),
                     ),
+                  ),
+                  Flexible(
+                    flex: 7,
+                    child: Column(
+                      children: [
+                        Padding(padding: EdgeInsets.fromLTRB(0, 75, 0, 0)),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3),
+                                )
+                              ],
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Информация",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.house,
+                                                color: Colors.blue,
+                                                size: 50,
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10)),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    'Адрес',
+                                                    style: TextStyle(
+                                                        color: Colors.black38,
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                ],
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2)),
+                                              Column(
+                                                children: [
+                                                  DateBase().getUserData(
+                                                      'City',
+                                                      Colors.black,
+                                                      14,
+                                                      FontWeight.w400)
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.phone,
+                                                color: Colors.green,
+                                                size: 50,
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10)),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    'Телефон',
+                                                    style: TextStyle(
+                                                        color: Colors.black38,
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                ],
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2)),
+                                              Column(
+                                                children: [
+                                                  DateBase().getUserData(
+                                                      'Phone',
+                                                      Colors.black,
+                                                      14,
+                                                      FontWeight.w400)
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.school,
+                                                color: Colors.red,
+                                                size: 50,
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10)),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    'Учебное заведение',
+                                                    style: TextStyle(
+                                                        color: Colors.black38,
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                ],
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2)),
+                                              Column(
+                                                children: [
+                                                  DateBase().getUserData(
+                                                      'School',
+                                                      Colors.black,
+                                                      14,
+                                                      FontWeight.w400)
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.science,
+                                                color: Colors.orange,
+                                                size: 50,
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10)),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    'Последний курс',
+                                                    style: TextStyle(
+                                                        color: Colors.black38,
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                ],
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2)),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    '...',
+                                                    style:
+                                                        TextStyle(fontSize: 14),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                height: 80,
+                margin: EdgeInsets.fromLTRB(20, 0, 20, 40),
+                // color: Colors.white,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5),
+                        topRight: Radius.circular(5),
+                        bottomLeft: Radius.circular(5),
+                        bottomRight: Radius.circular(5)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      )
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Age',
+                                  style: TextStyle(
+                                      color: Colors.black45, fontSize: 16)),
+                              DateBase().getUserData(
+                                  'Age', Colors.black, 16, FontWeight.w400),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Birthday',
+                                  style: TextStyle(
+                                      color: Colors.black45, fontSize: 16)),
+                              DateBase().getUserData('Birthday', Colors.black,
+                                  16, FontWeight.w400),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Class',
+                                  style: TextStyle(
+                                      color: Colors.black45, fontSize: 16)),
+                              DateBase().getUserData(
+                                  'Class', Colors.black, 16, FontWeight.w400),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
                   ],
                 ),
               )
             ],
           ),
-          Container(
-            height: 80,
-            margin: EdgeInsets.fromLTRB(20, 0, 20, 40),
-            // color: Colors.white,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  )
-                ]),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 100,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text('Age',
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 16)),
-                          Text('15',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16)),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 70,
-                      height: 100,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text('Birthday',
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 16)),
-                          Text('5 марта',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16)),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 100,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text('Class',
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 16)),
-                          Text('7a',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16)),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+        );
+      }),
     );
   }
 
@@ -680,17 +750,15 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: ElevatedButton(
                               onPressed: () {
-                                print("${uID!.uid} id пользователя");
-                                print("$bol b");
-                                // AutoRouter.of(context).pushNamed('/reg');
-                                DateBase().getUser();
-                                DateBase().getUserData("Name");
+                                // print("${uID!.uid} id пользователя");
+                                // print("$bol b");
+                                AutoRouter.of(context).pushNamed('/reg');
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent),
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                child: DateBase().getUserData("Class"),
+                                child: Text("Войти"),
                               )),
                         ),
                       ],
@@ -954,27 +1022,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future? test;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("$bol 3");
+    //СРАБАТЫВАЕТ И ПРИНТ И ФУНКЦИЯ !!!
+    print(DateBase().getAva());
     DateBase().checkUser();
-    DateBase().getUser();
-    DateBase().getUserData('Name');
-    print("$bol 4");
 
-    void fun() {
-      if (bol == true) {
-        print('$bol 1');
-      } else {
-        print('$bol 2');
-      }
-    }
+    // void fun() {
+    //   if (bol == true) {
+    //     print('$bol 1');
+    //   } else {
+    //     print('$bol 2');
+    //   }
+    // }
 
-    setState(() {
-      fun();
-    });
-    fun();
+    // setState(() {
+    //   fun();
+    // });
+    // fun();
   }
 }

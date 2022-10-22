@@ -39,7 +39,7 @@ class LandingPage extends StatelessWidget {
     //     ],
     //   ),
     // );
-    
+    print(isLoggedIn);
     return isLoggedIn ? HomePage() : Start();
   }
 }
