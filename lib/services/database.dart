@@ -118,6 +118,10 @@ class DateBase {
         });
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getSubData() {
+    return FirebaseFirestore.instance.collection('courses').snapshots();
+  }
+
   Future getAva() {
     String ava2;
     // Map<String, dynamic>? ava;
