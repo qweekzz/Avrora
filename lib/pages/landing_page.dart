@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -5,15 +6,49 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter_app/pages/start_page.dart';
 import 'package:flutter_app/pages/home_page.dart';
+import 'package:flutter_app/routes/router.gr.dart';
 import 'package:provider/provider.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-class LandingPage extends StatelessWidget {
+import '../globals.dart';
+
+class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
     final bool isLoggedIn = user != null;
+
+    // return AutoTabsRouter(
+    //   // list of your tab routes
+    //   // routes used here must be declaraed as children
+    //   // routes of /dashboard
+    //   routes: [
+    //     // StartRoute(),
+    //     HomePageRoute(),
+    //   ],
+    //   builder: (context, child, animation) {
+    //     // obtain the scoped TabsRouter controller using context
+    //     final tabsRouter = AutoTabsRouter.of(context);
+    //     // Here we're building our Scaffold inside of AutoTabsRouter
+    //     // to access the tabsRouter controller provided in this context
+    //     //
+    //     //alterntivly you could use a global key
+    //     return Scaffold(
+    //       body: child,
+    //     );
+    //   },
+    // );
+
+    // return Scaffold(
+    //   body: isLoggedIn ? HomePage() : Start(),
+    // );
 
     // return Scaffold(
     //   body: Column(
@@ -22,7 +57,7 @@ class LandingPage extends StatelessWidget {
     //     children: [
     //       Center(
     //         child: ElevatedButton(
-    //           onPressed: (){
+    //           onPressed: () {
     //             print(isLoggedIn);
     //           },
     //           child: Text('123'),
@@ -30,8 +65,8 @@ class LandingPage extends StatelessWidget {
     //       ),
     //       Center(
     //         child: ElevatedButton(
-    //           onPressed: (){
-    //             FirebaseAuth.instance.signOut();
+    //           onPressed: () {
+    //             print(isLoggedIn);
     //           },
     //           child: Text('313212'),
     //         ),
@@ -39,7 +74,8 @@ class LandingPage extends StatelessWidget {
     //     ],
     //   ),
     // );
-    print(isLoggedIn);
+    // print(isLoggedIn);
+
     return isLoggedIn ? HomePage() : Start();
   }
 }

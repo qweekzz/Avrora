@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -10,70 +9,26 @@ import 'package:flutter_app/pages/MainHome.dart';
 import 'package:flutter_app/routes/router.gr.dart';
 import 'package:flutter_app/services/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_file/open_file.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../services/counterBloc.dart';
 import '../services/database.dart';
 import '../services/storage.dart';
-import '../services/test.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<Profile> createState() => _ProfileState();
 }
 
-// Все 3 страницы вообщем
-class _HomePageState extends State<HomePage> {
-  int index = 0;
-
-  final _formKey = GlobalKey<FormState>();
-
-  final _controllerNumb = TextEditingController();
-  final _controllerName = TextEditingController();
-  final _controllerSurname = TextEditingController();
-  final _controllerPatronymic = TextEditingController();
-  final _controllerBirthday = TextEditingController();
-  final _controllerCity = TextEditingController();
-  final _controllerClass = TextEditingController();
-  final _controllerSchool = TextEditingController();
-
-  // var a = FirebaseAuth.instance.currentUser?.uid;
-  // var tes;
-  // bool bo = tes;
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _ProfileState extends State<Profile> {
   static const prifile = AssetImage('images/prof2.png');
-  List userList = [];
-
-  //убрать в отдельный файл
-  void openFile(PlatformFile file) {
-    OpenFile.open(file.path!);
+  @override
+  Widget build(BuildContext context) {
+    return Select(context);
   }
-
-  late List<Widget> _contentInHomePage = <Widget>[
-    // Page 1
-    MainHome(),
-    // Page 2
-    register(context),
-    // _register(context),
-    // Page 3
-    Select(context)
-  ];
-
-  // Кастомный Widget для input на странице _register
-  // Widget _selectPage() {
-  //   return bol ? _profilePage() : _NullProfile();
-  // }
 
   Widget Select(BuildContext context) => FutureBuilder(
       future: DateBase().checkUser(),
@@ -81,176 +36,12 @@ class _HomePageState extends State<HomePage> {
         return bol ? profilePage() : _NullProfile();
       });
 
-  @override
-  Widget _input(String text, dynamic inputController) => Container(
-        padding: const EdgeInsets.only(bottom: 15),
-        child: TextFormField(
-          controller: inputController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Поле не может быть пустым';
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            labelText: text,
-            labelStyle: const TextStyle(
-              fontSize: 16,
-            ),
-            counterText: '',
-            isCollapsed: true,
-            contentPadding: const EdgeInsets.fromLTRB(10, 18, 10, 18),
-            enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                borderSide: BorderSide(color: Colors.grey)),
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                borderSide: BorderSide(color: Colors.black)),
-            focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                borderSide: BorderSide(
-                  color: Color.fromARGB(255, 108, 14, 164),
-                )),
-          ),
-        ),
-      );
-
-  // Страница регистрации
-  Widget register(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var height1 = size.height;
-    var width1 = size.width;
-
-    return SingleChildScrollView(
-      child: Container(
-        // height: height1,
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 0, 0),
-                  child: const Text(
-                    'Заполните профиль',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 15),
-                  child: const Text(
-                      'Указывайте ваши настоящие данные, это потребуется при выдаче сертификатов и наград'),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
-                  child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          _input('Фамилия', _controllerSurname),
-                          _input('Имя', _controllerName),
-                          _input('Отчество', _controllerPatronymic),
-                          _input('Дата рождения', _controllerBirthday),
-                          _input('Класс', _controllerClass),
-                          _input('Телефон', _controllerNumb),
-                          // _input('Населенный пункт', _controllerCity),
-                          // _input('Учебное заведение', _controllerSchool),
-                          //Кнопка
-                          Container(
-                            width: width1,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black54.withOpacity(0.3),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(1, 4),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(8),
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 108, 14, 164),
-                                  Color.fromARGB(255, 153, 28, 172)
-                                ],
-                                end: Alignment.bottomRight,
-                                begin: Alignment.topLeft,
-                              ),
-                            ),
-                            // color: Colors.white,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  // if (_formKey.currentState!.validate()) {
-                                  //   DateBase().addUser(Users(
-                                  //     name: _controllerName.text,
-                                  //     nickName: _controllerName.text,
-                                  //     city: _controllerCity.text,
-                                  //     school: _controllerSchool.text,
-                                  //     birthday:
-                                  //         int.parse(_controllerBirthday.text),
-                                  //     age: int.parse(_controllerBirthday.text),
-                                  //     schoolClass:
-                                  //         int.parse(_controllerClass.text),
-                                  //     phoneNumber:
-                                  //         int.parse(_controllerNumb.text),
-                                  //   ));
-                                  //   print('OK');
-                                  //   // AutoRouter.of(context).pushNamed('/home');
-                                  // } else {
-                                  //   print('validation failed');
-                                  //   // AutoRouter.of(context).pushNamed('/home');
-                                  // }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.transparent),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                  child: Text('Зарегистрироваться'),
-                                )),
-                          ),
-                        ],
-                      )),
-                ),
-                Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      alignment: AlignmentDirectional.bottomStart,
-                      width: width1,
-                      child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(primary: Colors.green),
-                          child: const Text(
-                            'При входе на ресурс,\nвы принимаете условия доступа',
-                            style: TextStyle(color: Colors.grey),
-                          )),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Страница заполненного профили (сделать динамику)
   Widget profilePage() {
     return BlocProvider<counterBloc>(
       create: (BuildContext context) => counterBloc(),
       child:
           BlocBuilder<counterBloc, int>(builder: (BuildContext context, state) {
+        const prifile = AssetImage('images/prof2.png');
         return Scaffold(
           body: Stack(
             alignment: AlignmentDirectional.center,
@@ -313,6 +104,8 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     );
                                   } else {
+                                    const prifile =
+                                        AssetImage('images/prof2.png');
                                     return Image(
                                       image: prifile,
                                       width: 100,
@@ -667,11 +460,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Страница не заполненного профили (сделать динамику)
   Widget _NullProfile() {
     var size = MediaQuery.of(context).size;
     var height1 = size.height;
     var width1 = size.width;
+    const prifile = AssetImage('images/prof2.png');
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.center,
@@ -993,280 +786,5 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-  }
-
-  Widget MainHome() {
-    return Scaffold(
-        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: DateBase().getSubData(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //проверка на ошибке (вдруг в базе не чего не окажется)
-        if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-        if (snapshot.hasData) {
-          //!!! запомнить
-          final doc = snapshot.data!.docs;
-          return Container(
-            padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-            child: ListView.separated(
-              itemCount: doc.length,
-              itemBuilder: ((BuildContext context, int index) {
-                final docId = snapshot.data!.docs[index].id;
-                final data = doc[index].data() as Map<String, dynamic>?;
-                // var tws = snapshot.data!.docChanges.forEach()
-                print("INDEX ${(index)}");
-                return Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 235, 31, 224),
-                        Color.fromARGB(255, 191, 74, 209),
-                        Color.fromARGB(255, 213, 161, 221),
-                      ],
-                      end: Alignment.bottomRight,
-                      begin: Alignment.topLeft,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      // String str = '2ernNzXalG2JOAQZrv0t';
-                      // var runes = str.runes.join();
-                      // print(runes);
-                      AutoRouter.of(context).push(
-                          SinagleCourseRoute(courseid: index, doc: docId));
-                    },
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 85,
-                                height: 100,
-                                // color: Colors.blue,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10)),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  margin: EdgeInsets.only(right: 20),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        textDirection: TextDirection.ltr,
-                                        children: [
-                                          Text(
-                                            data!['name'],
-                                            style: const TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 2)),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'author : ${data['author']}',
-                                            style: const TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          Text(
-                                            data['difficult'],
-                                            style: const TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            ),
-          );
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    ));
-  }
-
-  // StreamBuilder(
-  //         stream: DateBase().getSubData2(),
-  //         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-  //           print("SNAP ${snapshot.data?.docs.map((e) => e.id)}");
-  //           return ListView.separated(
-  //             itemCount: 1,
-  //             itemBuilder: ((BuildContext context, int index) {
-  //               print("snapshot ${DateBase().getSubData2()}");
-  //               return Text('1');
-  //             }),
-  //             separatorBuilder: (BuildContext context, int index) =>
-  //                 const Divider(),
-  //           );
-  //         },
-  //       )
-
-  // FutureBuilder(
-  //         future: DateBase().checkUser(),
-  //         builder: ((BuildContext context, AsyncSnapshot snapshot) {
-  //           // print("snapshot ${snapshot}");
-  //           return ListView.separated(
-  //             itemCount: 1,
-  //             itemBuilder: ((BuildContext context, int index) {
-  //               print("snapshot ${DateBase().getSubData2()}");
-  //               return DateBase().getSubData();
-  //             }),
-  //             separatorBuilder: (BuildContext context, int index) =>
-  //                 const Divider(),
-  //           );
-  //         }),
-  //       )
-
-  // Widget который делит стрицу на 3 (Solomon Bar)
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var height1 = size.height;
-    var width1 = size.width;
-
-    return Scaffold(
-      body: Center(
-        child: _contentInHomePage.elementAt(index),
-      ),
-      bottomNavigationBar: SalomonBottomBar(
-          currentIndex: index,
-          onTap: (i) => {setState(() => index = i)},
-          items: [
-            SalomonBottomBarItem(
-              icon: Icon(Icons.book),
-              title: Text('study'),
-            ),
-            SalomonBottomBarItem(
-              icon: Icon(Icons.search),
-              title: Text('search'),
-            ),
-            SalomonBottomBarItem(
-              icon: Icon(Icons.person),
-              title: Text('profile'),
-            ),
-          ]),
-    );
-  }
-
-  // Widget build(BuildContext context) {
-  //   return AutoTabsRouter(
-  //     // list of your tab routes
-  //     // routes used here must be declaraed as children
-  //     // routes of /dashboard
-  //     routes: [
-  //       MainHomePageRoute(),
-  //       MyCoursesRoute(),
-  //       ProfileRoute(),
-  //     ],
-  //     builder: (context, child, animation) {
-  //       // obtain the scoped TabsRouter controller using context
-  //       final tabsRouter = AutoTabsRouter.of(context);
-  //       // Here we're building our Scaffold inside of AutoTabsRouter
-  //       // to access the tabsRouter controller provided in this context
-  //       //
-  //       //alterntivly you could use a global key
-  //       return Scaffold(
-  //         body: FadeTransition(
-  //           opacity: animation,
-  //           // the passed child is techinaclly our animated selected-tab page
-  //           child: child,
-  //         ),
-  //         bottomNavigationBar: SalomonBottomBar(
-  //             currentIndex: tabsRouter.activeIndex,
-  //             onTap: (index) {
-  //               // here we switch between tabs
-  //               tabsRouter.setActiveIndex(index);
-  //             },
-  //             items: [
-  //               SalomonBottomBarItem(
-  //                 icon: Icon(Icons.book),
-  //                 title: Text('study'),
-  //               ),
-  //               SalomonBottomBarItem(
-  //                 icon: Icon(Icons.search),
-  //                 title: Text('search'),
-  //               ),
-  //               SalomonBottomBarItem(
-  //                 icon: Icon(Icons.person),
-  //                 title: Text('profile'),
-  //               ),
-  //             ]),
-  //       );
-  //     },
-  //   );
-  // }
-
-  Future? test;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //СРАБАТЫВАЕТ И ПРИНТ И ФУНКЦИЯ !!!
-    print(DateBase().getAva());
-    DateBase().checkUser();
-
-    // void fun() {
-    //   if (bol == true) {
-    //     print('$bol 1');
-    //   } else {
-    //     print('$bol 2');
-    //   }
-    // }
-
-    // setState(() {
-    //   fun();
-    // });
-    // fun();
   }
 }
