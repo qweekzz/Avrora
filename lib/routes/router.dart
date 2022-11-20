@@ -13,6 +13,7 @@ import 'package:flutter_app/pages/userProfile_Page.dart';
 import 'package:flutter_app/pages/myCourses_page.dart';
 import 'package:flutter_app/pages/start_page.dart';
 import 'package:flutter_app/pages/singleCourse_page.dart';
+import 'package:flutter_app/pages/test_page.dart';
 
 import 'package:flutter_app/pages/sendPassPhone_page.dart';
 import 'package:flutter_app/routes/router.gr.dart';
@@ -43,6 +44,7 @@ import '../globals.dart';
   AutoRoute(path: '/reg', page: Reg),
   AutoRoute(path: '/test', page: SendPassPhonePage),
   AutoRoute(path: '/otp', page: OtpPage),
+  AutoRoute(path: '/time', page: Test),
   // AutoRoute(path: '/course/:id', page: CoursePage),
 ])
 class $AppRouter {}

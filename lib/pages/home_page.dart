@@ -121,126 +121,25 @@ class _HomePageState extends State<HomePage> {
     var height1 = size.height;
     var width1 = size.width;
 
-    return SingleChildScrollView(
-      child: Container(
-        // height: height1,
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 0, 0),
-                  child: const Text(
-                    'Заполните профиль',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                  ),
-                )
-              ],
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Container(
+              color: Colors.amber,
             ),
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 15),
-                  child: const Text(
-                      'Указывайте ваши настоящие данные, это потребуется при выдаче сертификатов и наград'),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
-                  child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          _input('Фамилия', _controllerSurname),
-                          _input('Имя', _controllerName),
-                          _input('Отчество', _controllerPatronymic),
-                          _input('Дата рождения', _controllerBirthday),
-                          _input('Класс', _controllerClass),
-                          _input('Телефон', _controllerNumb),
-                          // _input('Населенный пункт', _controllerCity),
-                          // _input('Учебное заведение', _controllerSchool),
-                          //Кнопка
-                          Container(
-                            width: width1,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black54.withOpacity(0.3),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(1, 4),
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(8),
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 108, 14, 164),
-                                  Color.fromARGB(255, 153, 28, 172)
-                                ],
-                                end: Alignment.bottomRight,
-                                begin: Alignment.topLeft,
-                              ),
-                            ),
-                            // color: Colors.white,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  // if (_formKey.currentState!.validate()) {
-                                  //   DateBase().addUser(Users(
-                                  //     name: _controllerName.text,
-                                  //     nickName: _controllerName.text,
-                                  //     city: _controllerCity.text,
-                                  //     school: _controllerSchool.text,
-                                  //     birthday:
-                                  //         int.parse(_controllerBirthday.text),
-                                  //     age: int.parse(_controllerBirthday.text),
-                                  //     schoolClass:
-                                  //         int.parse(_controllerClass.text),
-                                  //     phoneNumber:
-                                  //         int.parse(_controllerNumb.text),
-                                  //   ));
-                                  //   print('OK');
-                                  //   // AutoRouter.of(context).pushNamed('/home');
-                                  // } else {
-                                  //   print('validation failed');
-                                  //   // AutoRouter.of(context).pushNamed('/home');
-                                  // }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.transparent),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                  child: Text('Зарегистрироваться'),
-                                )),
-                          ),
-                        ],
-                      )),
-                ),
-                Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      alignment: AlignmentDirectional.bottomStart,
-                      width: width1,
-                      child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(primary: Colors.green),
-                          child: const Text(
-                            'При входе на ресурс,\nвы принимаете условия доступа',
-                            style: TextStyle(color: Colors.grey),
-                          )),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(),
+          ),
+        ],
       ),
     );
   }
@@ -1013,6 +912,15 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: ((BuildContext context, int index) {
                 final docId = snapshot.data!.docs[index].id;
                 final data = doc[index].data() as Map<String, dynamic>?;
+                print(data!['img']);
+                final Url;
+                if (data['img'] != null) {
+                  Url =
+                      'https://firebasestorage.googleapis.com/v0/b/avrora-d2ff5.appspot.com/o/avatars%2F${data['img']}?alt=media&token=3264b4ec-30c0-4aa5-93d8-8ca0b173dd66';
+                } else {
+                  Url =
+                      'https://firebasestorage.googleapis.com/v0/b/avrora-d2ff5.appspot.com/o/avatars%2Fsonnic.png?alt=media&token=3264b4ec-30c0-4aa5-93d8-8ca0b173dd66';
+                }
                 // var tws = snapshot.data!.docChanges.forEach()
                 print("INDEX ${(index)}");
                 return Container(
@@ -1054,12 +962,14 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 width: 85,
                                 height: 100,
-                                // color: Colors.blue,
                                 decoration: BoxDecoration(
-                                  color: Colors.blue,
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(5),
                                     bottomLeft: Radius.circular(5),
+                                  ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(Url),
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -1082,7 +992,7 @@ class _HomePageState extends State<HomePage> {
                                         textDirection: TextDirection.ltr,
                                         children: [
                                           Text(
-                                            data!['name'],
+                                            data['name'],
                                             style: const TextStyle(
                                                 color: Colors.black87,
                                                 fontSize: 18,

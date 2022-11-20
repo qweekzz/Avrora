@@ -11,9 +11,9 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i10;
-import 'package:flutter/material.dart' as _i11;
-import 'package:flutter/src/widgets/framework.dart' as _i12;
+import 'package:auto_route/auto_route.dart' as _i11;
+import 'package:flutter/material.dart' as _i12;
+import 'package:flutter/src/widgets/framework.dart' as _i13;
 
 import '../pages/confirmPass_page.dart' as _i6;
 import '../pages/home_page.dart' as _i2;
@@ -24,28 +24,29 @@ import '../pages/second_page.dart' as _i5;
 import '../pages/sendPassPhone_page.dart' as _i8;
 import '../pages/singleCourse_page.dart' as _i3;
 import '../pages/start_page.dart' as _i4;
+import '../pages/test_page.dart' as _i10;
 
-class AppRouter extends _i10.RootStackRouter {
-  AppRouter([_i11.GlobalKey<_i11.NavigatorState>? navigatorKey])
+class AppRouter extends _i11.RootStackRouter {
+  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i10.PageFactory> pagesMap = {
+  final Map<String, _i11.PageFactory> pagesMap = {
     LandingPageRoute.name: (routeData) {
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.LandingPage(),
       );
     },
     HomePageRoute.name: (routeData) {
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.HomePage(),
       );
     },
     SinagleCourseRoute.name: (routeData) {
       final args = routeData.argsAs<SinagleCourseRouteArgs>();
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.SinagleCourse(
           courseid: args.courseid,
@@ -54,7 +55,7 @@ class AppRouter extends _i10.RootStackRouter {
       );
     },
     StartRoute.name: (routeData) {
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i4.Start(),
       );
@@ -62,7 +63,7 @@ class AppRouter extends _i10.RootStackRouter {
     SecondRoute.name: (routeData) {
       final args = routeData.argsAs<SecondRouteArgs>(
           orElse: () => const SecondRouteArgs());
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i5.Second(
           key: args.key,
@@ -72,7 +73,7 @@ class AppRouter extends _i10.RootStackRouter {
     },
     ConfirmPassRoute.name: (routeData) {
       final args = routeData.argsAs<ConfirmPassRouteArgs>();
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i6.ConfirmPass(userPhone: args.userPhone),
       );
@@ -80,7 +81,7 @@ class AppRouter extends _i10.RootStackRouter {
     RegRoute.name: (routeData) {
       final args =
           routeData.argsAs<RegRouteArgs>(orElse: () => const RegRouteArgs());
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i7.Reg(key: args.key),
       );
@@ -88,7 +89,7 @@ class AppRouter extends _i10.RootStackRouter {
     SendPassPhonePageRoute.name: (routeData) {
       final args = routeData.argsAs<SendPassPhonePageRouteArgs>(
           orElse: () => const SendPassPhonePageRouteArgs());
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i8.SendPassPhonePage(
           key: args.key,
@@ -98,61 +99,71 @@ class AppRouter extends _i10.RootStackRouter {
     },
     OtpPageRoute.name: (routeData) {
       final args = routeData.argsAs<OtpPageRouteArgs>();
-      return _i10.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i9.OtpPage(phoneTest: args.phoneTest),
+      );
+    },
+    TestRoute.name: (routeData) {
+      return _i11.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i10.Test(),
       );
     },
   };
 
   @override
-  List<_i10.RouteConfig> get routes => [
-        _i10.RouteConfig(
+  List<_i11.RouteConfig> get routes => [
+        _i11.RouteConfig(
           LandingPageRoute.name,
           path: '/',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           HomePageRoute.name,
           path: '/home',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           SinagleCourseRoute.name,
           path: '/home/:id',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           StartRoute.name,
           path: '/start',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           HomePageRoute.name,
           path: '/home',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           SecondRoute.name,
           path: '/second',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           ConfirmPassRoute.name,
           path: '/ConfirmPass',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           RegRoute.name,
           path: '/reg',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           SendPassPhonePageRoute.name,
           path: '/test',
         ),
-        _i10.RouteConfig(
+        _i11.RouteConfig(
           OtpPageRoute.name,
           path: '/otp',
+        ),
+        _i11.RouteConfig(
+          TestRoute.name,
+          path: '/time',
         ),
       ];
 }
 
 /// generated route for
 /// [_i1.LandingPage]
-class LandingPageRoute extends _i10.PageRouteInfo<void> {
+class LandingPageRoute extends _i11.PageRouteInfo<void> {
   const LandingPageRoute()
       : super(
           LandingPageRoute.name,
@@ -164,7 +175,7 @@ class LandingPageRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.HomePage]
-class HomePageRoute extends _i10.PageRouteInfo<void> {
+class HomePageRoute extends _i11.PageRouteInfo<void> {
   const HomePageRoute()
       : super(
           HomePageRoute.name,
@@ -176,7 +187,7 @@ class HomePageRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.SinagleCourse]
-class SinagleCourseRoute extends _i10.PageRouteInfo<SinagleCourseRouteArgs> {
+class SinagleCourseRoute extends _i11.PageRouteInfo<SinagleCourseRouteArgs> {
   SinagleCourseRoute({
     required int courseid,
     required String doc,
@@ -211,7 +222,7 @@ class SinagleCourseRouteArgs {
 
 /// generated route for
 /// [_i4.Start]
-class StartRoute extends _i10.PageRouteInfo<void> {
+class StartRoute extends _i11.PageRouteInfo<void> {
   const StartRoute()
       : super(
           StartRoute.name,
@@ -223,9 +234,9 @@ class StartRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.Second]
-class SecondRoute extends _i10.PageRouteInfo<SecondRouteArgs> {
+class SecondRoute extends _i11.PageRouteInfo<SecondRouteArgs> {
   SecondRoute({
-    _i12.Key? key,
+    _i13.Key? key,
     dynamic userPhone,
   }) : super(
           SecondRoute.name,
@@ -245,7 +256,7 @@ class SecondRouteArgs {
     this.userPhone,
   });
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final dynamic userPhone;
 
@@ -257,7 +268,7 @@ class SecondRouteArgs {
 
 /// generated route for
 /// [_i6.ConfirmPass]
-class ConfirmPassRoute extends _i10.PageRouteInfo<ConfirmPassRouteArgs> {
+class ConfirmPassRoute extends _i11.PageRouteInfo<ConfirmPassRouteArgs> {
   ConfirmPassRoute({required String userPhone})
       : super(
           ConfirmPassRoute.name,
@@ -281,8 +292,8 @@ class ConfirmPassRouteArgs {
 
 /// generated route for
 /// [_i7.Reg]
-class RegRoute extends _i10.PageRouteInfo<RegRouteArgs> {
-  RegRoute({_i12.Key? key})
+class RegRoute extends _i11.PageRouteInfo<RegRouteArgs> {
+  RegRoute({_i13.Key? key})
       : super(
           RegRoute.name,
           path: '/reg',
@@ -295,7 +306,7 @@ class RegRoute extends _i10.PageRouteInfo<RegRouteArgs> {
 class RegRouteArgs {
   const RegRouteArgs({this.key});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   @override
   String toString() {
@@ -306,9 +317,9 @@ class RegRouteArgs {
 /// generated route for
 /// [_i8.SendPassPhonePage]
 class SendPassPhonePageRoute
-    extends _i10.PageRouteInfo<SendPassPhonePageRouteArgs> {
+    extends _i11.PageRouteInfo<SendPassPhonePageRouteArgs> {
   SendPassPhonePageRoute({
-    _i12.Key? key,
+    _i13.Key? key,
     dynamic phoneTest,
   }) : super(
           SendPassPhonePageRoute.name,
@@ -328,7 +339,7 @@ class SendPassPhonePageRouteArgs {
     this.phoneTest,
   });
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final dynamic phoneTest;
 
@@ -340,7 +351,7 @@ class SendPassPhonePageRouteArgs {
 
 /// generated route for
 /// [_i9.OtpPage]
-class OtpPageRoute extends _i10.PageRouteInfo<OtpPageRouteArgs> {
+class OtpPageRoute extends _i11.PageRouteInfo<OtpPageRouteArgs> {
   OtpPageRoute({required String phoneTest})
       : super(
           OtpPageRoute.name,
@@ -360,4 +371,16 @@ class OtpPageRouteArgs {
   String toString() {
     return 'OtpPageRouteArgs{phoneTest: $phoneTest}';
   }
+}
+
+/// generated route for
+/// [_i10.Test]
+class TestRoute extends _i11.PageRouteInfo<void> {
+  const TestRoute()
+      : super(
+          TestRoute.name,
+          path: '/time',
+        );
+
+  static const String name = 'TestRoute';
 }

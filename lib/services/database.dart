@@ -210,4 +210,38 @@ class DateBase {
     print(ava.toString() + '!!!!!!!!!!');
     return await ava;
   }
+
+  Future GetCourseImg(doc) async {
+    var collection = FirebaseFirestore.instance.collection('courses').doc(doc);
+    var querySnapshot = await collection.get();
+    var data = querySnapshot.data();
+    // print(querySnapshot.data());
+    var img = data!['img'];
+    // print(data['content']['lesson1']);
+    return data['img'];
+    // print(querySnapshot.data()?['author'] ?? 'error');
+  }
+
+  Widget GetCourseData(String userField, doc, String text) {
+    Map<String, dynamic>? data;
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('courses');
+    return FutureBuilder<DocumentSnapshot>(
+        future: users.doc(doc).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            data = snapshot.data?.data() as Map<String, dynamic>?;
+            return Text(text + (data?[userField]).toString(),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400));
+          } else {
+            return Text('else');
+          }
+        });
+  }
+
+  Future addCourse(doc) async {
+    return FirebaseFirestore.instance.collection('users').doc(uID!.uid).set({
+      'CourseID': FieldValue.arrayUnion([doc]),
+    }, SetOptions(merge: true));
+  }
 }
