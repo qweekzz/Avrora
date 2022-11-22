@@ -244,4 +244,146 @@ class DateBase {
       'CourseID': FieldValue.arrayUnion([doc]),
     }, SetOptions(merge: true));
   }
+
+  Widget key2() {
+    Map<String, dynamic>? data;
+    Map<String, dynamic>? data2;
+    var coll = FirebaseFirestore.instance.collection('courses');
+    var user = FirebaseFirestore.instance.collection('users').doc(uID!.uid);
+    return FutureBuilder<DocumentSnapshot>(
+        future: user.get(),
+        builder: (context, snapshot) {
+          data = snapshot.data?.data() as Map<String, dynamic>?;
+          print("snapshot ${data?['CourseID']}");
+          if (snapshot.connectionState == ConnectionState.done) {
+            data = snapshot.data?.data() as Map<String, dynamic>?;
+            return ListView.separated(
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                var hz = data?['CourseID'][index];
+                return FutureBuilder<DocumentSnapshot>(
+                  future: coll.doc(hz).get(),
+                  builder: (context, snapshot) {
+                    final data2 =
+                        snapshot.data?.data() as Map<String, dynamic>?;
+
+                    var allLesson = data2?['lessons'] ?? 1;
+                    var myLesson = data2?['myLessons'] ?? 1;
+                    var progress = (myLesson / allLesson);
+                    var backImg = data2?['img'] ?? 'sonnic.png';
+                    print('object $progress');
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                'https://firebasestorage.googleapis.com/v0/b/avrora-d2ff5.appspot.com/o/avatars%2F$backImg?alt=media&token=3264b4ec-30c0-4aa5-93d8-8ca0b173dd66'),
+                            fit: BoxFit.cover,
+                          )),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
+                        decoration: const BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.description,
+                                  color: Colors.white70,
+                                  size: 18,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  '${allLesson ?? 1}',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Text(
+                                  'уроков',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  '${data2?['name'] ?? 'noName'}',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  '${data2?['desc'] ?? 'noDesc'}',
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 18,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 35,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${myLesson ?? 0} /${allLesson ?? 0}',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                LinearProgressIndicator(
+                                  minHeight: 7,
+                                  value: progress ?? 0,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.green),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          } else {
+            return Text('else');
+          }
+        });
+  }
 }

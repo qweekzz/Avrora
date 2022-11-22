@@ -122,24 +122,19 @@ class _HomePageState extends State<HomePage> {
     var width1 = size.width;
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 40, 10, 0),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              color: Colors.amber,
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Container(
+                child: DateBase().key2(),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
