@@ -28,10 +28,10 @@ class Second extends StatefulWidget {
 class _SecondState extends State<Second> {
   final _controllerNumb = TextEditingController();
 
-  _sendPass() {
-    print('Код: ' + globals.code.elementAt(globals.randomNumber));
-    return print(globals.randomNumber);
-  }
+  // _sendPass() {
+  //   print('Код: ' + globals.code.elementAt(globals.randomNumber));
+  //   return print(globals.randomNumber);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,208 +40,185 @@ class _SecondState extends State<Second> {
     var width1 = size.width;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
+      body: SingleChildScrollView(
+        child: Container(
+          height: height1,
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                  flex: 10,
-                  fit: FlexFit.loose,
-                  child: Container(
-                    color: Colors.white,
-                    child: Stack(
-                      // fit: StackFit.loose,
+              Stack(
+                alignment: AlignmentDirectional.topStart,
+                children: [
+                  ClipPath(
+                    clipper: MyCustomClipper(),
+                    child: Container(
+                      color: const Color.fromARGB(255, 108, 14, 164),
+                      width: width1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ClipPath(
+                              child: CustomPaint(
+                            size: Size(
+                                width1 / 1.28, (height1 / 1.15).toDouble()),
+                            painter: RPSCustomPainter(),
+                          )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: height1 / 1.2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ClipPath(
-                          clipper: MyCustomClipper(),
-                          child: Container(
-                            color: Color.fromARGB(255, 108, 14, 164),
-                            width: width1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ClipPath(
-                                    child: CustomPaint(
-                                  size:
-                                      Size(width1 / 1.28, (height1).toDouble()),
-                                  painter: RPSCustomPainter(),
-                                )),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(40, 0, 0, 15),
+                                  child: Text(
+                                    'Вход по номеру \nтелефона',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(40, 15, 0, 0),
+                                  child: Text(
+                                    'Укажите свой номер телефона ниже \nи далее подтвердите его.',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                )
                               ],
                             ),
-                          ),
+                          ],
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Container(
-                            //   width: 30,
-                            //   height: 30,
-                            //   decoration: const BoxDecoration(
-                            //     color: Colors.white,
-                            //     shape: BoxShape.circle,
-                            //   ),
-                            //   child: IconButton(
-                            //     padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                            //   onPressed: () {},
-                            //   icon: Icon(Icons.close, size: 30,)
-                            //   ),
-                            // ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(40, 0, 0, 15),
-                                      child: Text(
-                                        'Вход по номеру \nтелефона',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                Container(
+                                  width: width1 - 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: TextField(
+                                    controller: _controllerNumb,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Номер телефона',
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(40, 15, 0, 0),
-                                      child: Text(
-                                        'Укажите свой номер телефона ниже \nи далее подтвердите его.',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16),
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
-                            Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: width1 - 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: TextField(
-                                        controller: _controllerNumb,
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: 'Номер телефона',
-                                        ),
-                                      ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(20, 50, 20, 0),
+                                  width: width1 - 40,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black54.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(1, 4),
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                    gradient: LinearGradient(
+                                      end: Alignment.bottomRight,
+                                      begin: Alignment.topLeft,
+                                      colors: [
+                                        Color.fromARGB(255, 108, 14, 164),
+                                        Color.fromARGB(255, 153, 28, 172)
+                                      ],
+                                      // tileMode: TileMode.mirror,
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin:
-                                          EdgeInsets.fromLTRB(20, 50, 20, 0),
-                                      width: width1 - 40,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black54.withOpacity(0.3),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(1, 4),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.circular(8),
-                                        gradient: LinearGradient(
-                                          end: Alignment.bottomRight,
-                                          begin: Alignment.topLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 108, 14, 164),
-                                            Color.fromARGB(255, 153, 28, 172)
-                                          ],
-                                          // tileMode: TileMode.mirror,
-                                        ),
-                                      ),
-                                      // color: Colors.white,
-                                      child: ElevatedButton(
-                                          onPressed: () {
-                                            _sendPass();
-                                            // _signUp();
-                                            AutoRouter.of(context).push(
-                                                ConfirmPassRoute(
-                                                    userPhone:
-                                                        _controllerNumb.text));
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                              primary: Colors.transparent),
-                                          child: Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0, 20, 0, 20),
-                                            child: Text('Продолжить'),
-                                          )),
+                                  ),
+                                  // color: Colors.white,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      AutoRouter.of(context).push(
+                                          ConfirmPassRoute(
+                                              userPhone: _controllerNumb.text));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.transparent),
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                      child: Text('Продолжить'),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
-                        ),
+                        )
                       ],
                     ),
-                  )),
-              Flexible(
-                  flex: 3,
-                  child: Container(
-                    width: width1,
-                    color: Colors.white,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
-                          width: width1 / 2 + 80,
-                          child: TextButton(
-                              onPressed: () {},
-                              style:
-                                  TextButton.styleFrom(primary: Colors.green),
-                              child: Text(
-                                'При входе на ресурс,\nвы принимаете условия доступа',
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                        ),
-                      ],
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    width: 30,
+                    height: 30,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                          iconSize: 25,
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          // alignment: Alignment.topLeft,
+                          onPressed: () {
+                            AutoRouter.of(context).navigateBack();
+                          },
+                          icon: Icon(
+                            Icons.close_sharp,
+                            color: Color.fromARGB(255, 108, 14, 164),
+                          )),
                     ),
-                  )),
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
+                    width: width1 / 2 + 80,
+                    child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(primary: Colors.green),
+                        child: Text(
+                          'При входе на ресурс,\nвы принимаете условия доступа',
+                          style: TextStyle(color: Colors.grey),
+                        )),
+                  ),
+                ],
+              )
             ],
           ),
-          Positioned(
-            top: 20,
-            right: 20,
-            width: 30,
-            height: 30,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                  iconSize: 25,
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  // alignment: Alignment.topLeft,
-                  onPressed: () {
-                    AutoRouter.of(context).navigateBack();
-                  },
-                  icon: Icon(
-                    Icons.close_sharp,
-                    color: Color.fromARGB(255, 108, 14, 164),
-                  )),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -19,6 +19,7 @@ import '../services/counterBloc.dart';
 import '../services/database.dart';
 import '../services/storage.dart';
 import '../services/test.dart';
+import '../services/auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -146,6 +147,46 @@ class _HomePageState extends State<HomePage> {
       child:
           BlocBuilder<counterBloc, int>(builder: (BuildContext context, state) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                tooltip: 'Open shopping cart',
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Хотите выйти?'),
+                        // titlePadding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+                        content: Text(
+                            'Это опять вводить телефон, ждать СМС, вам оно надо?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              AutoRouter.of(context).pop();
+                            },
+                            child: Text('Отмена'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              print('LogOut');
+                              AuthServices().signOut();
+                              AutoRouter.of(context).pushNamed('/');
+                            },
+                            child: Text('Выйти'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
           body: Stack(
             alignment: AlignmentDirectional.center,
             children: [

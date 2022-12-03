@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/icon/my_flutter_app_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
 
 // import 'package:auto_route/ro';
 
@@ -41,7 +43,8 @@ class Start extends StatelessWidget {
                               clipper: MyCustomClipper(),
                               child: Container(
                                   width: width1,
-                                  color: Color.fromARGB(255, 108, 14, 164),
+                                  color:
+                                      const Color.fromARGB(255, 108, 14, 164),
                                   child: Row(
                                     // crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -53,7 +56,6 @@ class Start extends StatelessWidget {
                                           painter: RPSCustomPainter(),
                                         ),
                                       ),
-                                      // Text('data')
                                     ],
                                   )),
                             ),
@@ -66,7 +68,7 @@ class Start extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
-                            children: [
+                            children: const [
                               Padding(
                                 padding: EdgeInsets.fromLTRB(35, 0, 0, 20),
                                 child: Text(
@@ -82,7 +84,7 @@ class Start extends StatelessWidget {
                               Container(
                                 width: 64,
                                 height: 64,
-                                margin: EdgeInsets.only(bottom: 30),
+                                margin: const EdgeInsets.only(bottom: 30),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: const Border(
@@ -101,13 +103,22 @@ class Start extends StatelessWidget {
                                       )
                                     ]),
                                 child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.ac_unit)),
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Будет позже')),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.facebook,
+                                      color: Colors.blue,
+                                    )),
                               ),
                               Container(
                                 width: 64,
                                 height: 64,
-                                margin: EdgeInsets.only(bottom: 30),
+                                margin: const EdgeInsets.only(bottom: 30),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: const Border(
@@ -122,17 +133,26 @@ class Start extends StatelessWidget {
                                         color: Colors.black54.withOpacity(0.4),
                                         spreadRadius: 2,
                                         blurRadius: 5,
-                                        offset: Offset(1, 4),
+                                        offset: const Offset(1, 4),
                                       )
                                     ]),
                                 child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.ac_unit)),
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Будет позже')),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.email,
+                                    color: Colors.red,
+                                  ),
+                                ),
                               ),
                               Container(
                                 width: 64,
                                 height: 64,
-                                margin: EdgeInsets.only(bottom: 30),
+                                margin: const EdgeInsets.only(bottom: 30),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: const Border(
@@ -147,17 +167,26 @@ class Start extends StatelessWidget {
                                         color: Colors.black54.withOpacity(0.4),
                                         spreadRadius: 2,
                                         blurRadius: 5,
-                                        offset: Offset(1, 4),
+                                        offset: const Offset(1, 4),
                                       )
                                     ]),
                                 child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.ac_unit)),
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Уже тут')),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.phone,
+                                      color: Colors.green,
+                                    )),
                               ),
                               Container(
                                 width: 64,
                                 height: 64,
-                                margin: EdgeInsets.only(bottom: 30),
+                                margin: const EdgeInsets.only(bottom: 30),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: const Border(
@@ -172,12 +201,21 @@ class Start extends StatelessWidget {
                                         color: Colors.black54.withOpacity(0.4),
                                         spreadRadius: 2,
                                         blurRadius: 5,
-                                        offset: Offset(1, 4),
+                                        offset: const Offset(1, 4),
                                       )
                                     ]),
                                 child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.zoom_out_map)),
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Будет позже')),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      MyFlutterApp.vk,
+                                      color: Colors.blue,
+                                    )),
                               ),
                             ],
                           ),
@@ -199,7 +237,7 @@ class Start extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 width: width1 - 40,
                                 decoration: BoxDecoration(
                                   boxShadow: [
@@ -211,7 +249,7 @@ class Start extends StatelessWidget {
                                     )
                                   ],
                                   borderRadius: BorderRadius.circular(8),
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                     colors: [
                                       Color.fromARGB(255, 108, 14, 164),
                                       Color.fromARGB(255, 153, 28, 172)
@@ -227,7 +265,7 @@ class Start extends StatelessWidget {
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary: Colors.transparent),
-                                    child: Padding(
+                                    child: const Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 20, 0, 20),
                                       child: Text('Вход по номеру телефона'),
@@ -240,13 +278,13 @@ class Start extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
+                              padding: const EdgeInsets.fromLTRB(20, 5, 0, 10),
                               width: width1 / 2 + 80,
                               child: TextButton(
                                   onPressed: () {},
                                   style: TextButton.styleFrom(
                                       primary: Colors.green),
-                                  child: Text(
+                                  child: const Text(
                                     'При входе на ресурс,\nвы принимаете условия доступа',
                                     style: TextStyle(color: Colors.grey),
                                   )),
@@ -348,7 +386,7 @@ class Start extends StatelessWidget {
             left: 70,
             width: 130,
             child: Column(
-              children: [
+              children: const [
                 Text(
                   'АВРОРА',
                   style: TextStyle(color: Colors.white, fontSize: 32),
@@ -361,7 +399,7 @@ class Start extends StatelessWidget {
             left: 70,
             width: 130,
             child: Column(
-              children: [
+              children: const [
                 Text(
                   'центр развития талантов',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -412,9 +450,9 @@ class RPSCustomPainter extends CustomPainter {
     paint0.shader = ui.Gradient.linear(
         Offset(size.width * 0.2, size.height * 0.42),
         Offset(size.width, size.height * 0.75), [
-      Color.fromARGB(255, 153, 28, 172),
-      Color.fromARGB(150, 121, 14, 164),
-      Color.fromARGB(0, 108, 14, 164)
+      const Color.fromARGB(255, 153, 28, 172),
+      const Color.fromARGB(150, 121, 14, 164),
+      const Color.fromARGB(0, 108, 14, 164)
     ], [
       0.00,
       0.73,

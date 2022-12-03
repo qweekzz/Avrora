@@ -9,4 +9,8 @@ class AuthServices {
   Stream<User?> get currentUser {
     return FirebaseAuth.instance.authStateChanges();
   }
+
+  signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
