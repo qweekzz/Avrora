@@ -1,14 +1,10 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/icon/my_flutter_app_icons.dart';
-import 'package:fluttericon/typicons_icons.dart';
 
 // import 'package:auto_route/ro';
 
-import 'package:gradient_widgets/gradient_widgets.dart';
 import 'dart:ui' as ui;
 
 class Start extends StatelessWidget {
@@ -280,14 +276,28 @@ class Start extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.fromLTRB(20, 5, 0, 10),
                               width: width1 / 2 + 80,
-                              child: TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                      primary: Colors.green),
-                                  child: const Text(
-                                    'При входе на ресурс,\nвы принимаете условия доступа',
-                                    style: TextStyle(color: Colors.grey),
-                                  )),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text:
+                                          'При входе на ресурс,\nвы принимаете ',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    TextSpan(
+                                      text: 'условия доступа',
+                                      style:
+                                          const TextStyle(color: Colors.blue),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          AutoRouter.of(context)
+                                              .pushNamed('/license');
+                                        },
+                                    ),
+                                    TextSpan(text: '3'),
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         )

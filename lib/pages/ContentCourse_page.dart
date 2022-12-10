@@ -5,11 +5,12 @@ import '../services/counterBloc.dart';
 import '../services/database.dart';
 
 class ContentCourse extends StatefulWidget {
-  ContentCourse({
+  const ContentCourse({
+    Key? key,
     @PathParam('id') required this.courseid,
     @PathParam('lesson') required this.lesson,
     required this.doc,
-  });
+  }) : super(key: key);
   final int courseid;
   final String doc;
   final int lesson;
@@ -22,6 +23,7 @@ class _ContentCourseState extends State<ContentCourse> {
   late int _newLesson;
 
   @override
+  // ignore: must_call_super
   void initState() {
     _newLesson = widget.lesson;
   }
@@ -69,8 +71,8 @@ class _ContentCourseState extends State<ContentCourse> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(20, 0, 20, 20),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            20, 0, 20, 20),
                                         height: 50,
                                         width: 180,
                                         decoration: BoxDecoration(
@@ -80,7 +82,7 @@ class _ContentCourseState extends State<ContentCourse> {
                                                   .withOpacity(0.3),
                                               spreadRadius: 2,
                                               blurRadius: 5,
-                                              offset: Offset(1, 4),
+                                              offset: const Offset(1, 4),
                                             )
                                           ],
                                           borderRadius:
@@ -95,12 +97,12 @@ class _ContentCourseState extends State<ContentCourse> {
                                           ),
                                         ),
                                         child: ElevatedButton(
-                                            onPressed: () async {
+                                            onPressed: () {
                                               if (_newLesson + 1 <
                                                   snapshot.data['lessons']) {
                                                 _newLesson++;
                                               }
-                                              await DateBase().updateMyCourse(
+                                              DateBase().updateMyCourse(
                                                   widget.doc, _newLesson);
 
                                               BlocProvider.of<counterBloc>(
@@ -110,10 +112,11 @@ class _ContentCourseState extends State<ContentCourse> {
                                             style: ElevatedButton.styleFrom(
                                                 primary: Colors.transparent),
                                             child: Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  0, 15, 0, 15),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 15, 0, 15),
                                               child: Row(
-                                                children: [
+                                                children: const [
                                                   Text('Следующий урок'),
                                                   SizedBox(
                                                     width: 8,
@@ -128,7 +131,7 @@ class _ContentCourseState extends State<ContentCourse> {
                                 ],
                               );
                             } else {
-                              return Text('...');
+                              return const Text('...');
                             }
                           }),
                     ),

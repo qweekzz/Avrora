@@ -1,21 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app/routes/router.gr.dart';
-import 'package:flutter_app/services/auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_file/open_file.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 
-import '../services/counterBloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../services/database.dart';
-import '../services/storage.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -29,7 +18,7 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("你好"),
+          title: const Text("你好"),
         ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: DateBase().getSubData(),
@@ -41,12 +30,11 @@ class _MainHomePageState extends State<MainHomePage> {
               //!!! запомнить
               final doc = snapshot.data!.docs;
               return Container(
-                padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
                 child: ListView.separated(
                   itemCount: doc.length,
                   itemBuilder: ((BuildContext context, int index) {
                     final data = doc[index].data() as Map<String, dynamic>?;
-                    print("INDEX ${data}");
                     return Container(
                       height: 100,
                       decoration: BoxDecoration(
@@ -65,7 +53,7 @@ class _MainHomePageState extends State<MainHomePage> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: Offset(0, 3),
+                            offset: const Offset(0, 3),
                           )
                         ],
                       ),
@@ -83,7 +71,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                     width: 85,
                                     height: 100,
                                     // color: Colors.blue,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.blue,
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(5),
@@ -91,13 +79,13 @@ class _MainHomePageState extends State<MainHomePage> {
                                       ),
                                     ),
                                   ),
-                                  Padding(
+                                  const Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 10)),
                                   Expanded(
                                     flex: 1,
                                     child: Container(
-                                      margin: EdgeInsets.only(right: 20),
+                                      margin: const EdgeInsets.only(right: 20),
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -119,7 +107,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                               ),
                                             ],
                                           ),
-                                          Padding(
+                                          const Padding(
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 2)),
                                           Row(
@@ -161,7 +149,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 ),
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ));

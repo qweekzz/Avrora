@@ -4,14 +4,15 @@ import 'package:flutter_app/services/database.dart';
 
 class SinagleCourse extends StatelessWidget {
   const SinagleCourse(
-      {@PathParam('id') required this.courseid, required this.doc});
+      {Key? key, @PathParam('id') required this.courseid, required this.doc})
+      : super(key: key);
   final int courseid;
   final String doc;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var height1 = size.height;
+    // var height1 = size.height;
     var width1 = size.width;
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +37,7 @@ class SinagleCourse extends StatelessWidget {
               ),
               width: 35,
               height: 35,
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 size: 20,
               ),
@@ -52,7 +53,6 @@ class SinagleCourse extends StatelessWidget {
               child: FutureBuilder(
                 future: DateBase().GetCourseImg(doc),
                 builder: (context, snapshot) {
-                  print(snapshot.data);
                   return Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -69,7 +69,7 @@ class SinagleCourse extends StatelessWidget {
           Expanded(
             flex: 8,
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
               color: Colors.white,
               child: SingleChildScrollView(
                 child: Column(
@@ -87,13 +87,13 @@ class SinagleCourse extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         DateBase().GetCourseData('desc', doc, ''),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
@@ -111,7 +111,7 @@ class SinagleCourse extends StatelessWidget {
                         DateBase().GetCourseData('lessons', doc, ''),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
@@ -129,7 +129,7 @@ class SinagleCourse extends StatelessWidget {
                         DateBase().GetCourseData('difficult', doc, ''),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
@@ -155,9 +155,9 @@ class SinagleCourse extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
               child: Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 height: 100,
                 width: width1 - 40,
                 decoration: BoxDecoration(
@@ -166,7 +166,7 @@ class SinagleCourse extends StatelessWidget {
                       color: Colors.black54.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(1, 4),
+                      offset: const Offset(1, 4),
                     )
                   ],
                   borderRadius: BorderRadius.circular(8),
@@ -187,7 +187,7 @@ class SinagleCourse extends StatelessWidget {
                     style:
                         ElevatedButton.styleFrom(primary: Colors.transparent),
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                      padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                       child:
                           DateBase().GetCourseData('price', doc, 'Купить за '),
                     )),

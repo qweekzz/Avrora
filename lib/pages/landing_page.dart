@@ -1,16 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter_app/pages/start_page.dart';
 import 'package:flutter_app/pages/home_page.dart';
-import 'package:flutter_app/routes/router.gr.dart';
 import 'package:provider/provider.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
-import '../globals.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -76,6 +69,6 @@ class _LandingPageState extends State<LandingPage> {
     // );
     // print(isLoggedIn);
 
-    return isLoggedIn ? HomePage() : Start();
+    return isLoggedIn ? const HomePage() : const Start();
   }
 }

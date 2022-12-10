@@ -1,12 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/counterBloc.dart';
 import '../services/database.dart';
 
-// final FirebaseAuth _auth = FirebaseAuth.instance;
-// final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 String birthDateInString = '';
 
 class Reg extends StatefulWidget {
-  Reg({Key? key}) : super(key: key);
+  const Reg({Key? key}) : super(key: key);
 
   @override
   State<Reg> createState() => _RegState();
@@ -45,7 +35,7 @@ class _RegState extends State<Reg> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var height1 = size.height;
+    // var height1 = size.height;
     var width1 = size.width;
 
     // виджет для инпутов
@@ -144,13 +134,10 @@ class _RegState extends State<Reg> {
                                                     initialEntryMode:
                                                         DatePickerEntryMode
                                                             .input,
-                                                    initialDate:
-                                                        new DateTime.utc(
-                                                            1999, 1, 1),
-                                                    firstDate:
-                                                        new DateTime(1900),
-                                                    lastDate:
-                                                        new DateTime(2023),
+                                                    initialDate: DateTime.utc(
+                                                        1999, 1, 1),
+                                                    firstDate: DateTime(1900),
+                                                    lastDate: DateTime(2023),
                                                     helpText:
                                                         'выберите дату рождения',
                                                     fieldHintText:
@@ -166,31 +153,31 @@ class _RegState extends State<Reg> {
                                                             birthDateInString);
                                               });
                                             }
-                                            String timestamp =
-                                                "${birthDate.year.toString()}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}";
-                                            print("$timestamp qwe");
+                                            // String timestamp =
+                                            //     "${birthDate.year.toString()}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}";
+                                            // print("$timestamp qwe");
                                             // print(birthDateInString);
                                           },
-                                          icon: Icon(Icons.date_range)),
+                                          icon: const Icon(Icons.date_range)),
                                       labelText: 'Birthday',
-                                      labelStyle: TextStyle(
+                                      labelStyle: const TextStyle(
                                         fontSize: 16,
                                       ),
                                       counterText: '',
                                       isCollapsed: true,
-                                      contentPadding:
-                                          EdgeInsets.fromLTRB(10, 18, 10, 18),
-                                      enabledBorder: OutlineInputBorder(
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          10, 18, 10, 18),
+                                      enabledBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5.0)),
                                           borderSide:
                                               BorderSide(color: Colors.grey)),
-                                      border: OutlineInputBorder(
+                                      border: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5.0)),
                                           borderSide:
                                               BorderSide(color: Colors.black)),
-                                      focusedBorder: OutlineInputBorder(
+                                      focusedBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5.0)),
                                           borderSide: BorderSide(
@@ -261,7 +248,7 @@ class _RegState extends State<Reg> {
                                       },
                                       style: ElevatedButton.styleFrom(
                                           primary: Colors.transparent),
-                                      child: Padding(
+                                      child: const Padding(
                                         padding:
                                             EdgeInsets.fromLTRB(0, 15, 0, 15),
                                         child: Text('Зарегистрироваться'),
@@ -270,7 +257,7 @@ class _RegState extends State<Reg> {
                               ],
                             )),
                       ),
-                      Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
+                      const Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
                       Column(
                         children: [
                           Container(

@@ -282,8 +282,13 @@ class DateBase {
                     var docId = (snapshot.data?.id).toString();
                     var allLesson = data2?['lessons'] ?? 1;
                     var myLesson = data2?['myLessons'] ?? 1;
+                    var finalLesson = data2?['myLessons'] ?? 1;
                     var progress = (myLesson / allLesson);
                     var backImg = data2?['img'] ?? 'sonnic.png';
+                    if (allLesson - 1 == myLesson) {
+                      progress = (myLesson + 1 / allLesson);
+                      finalLesson = myLesson + 1;
+                    }
                     print('object ${snapshot.data?.id}');
                     return InkWell(
                       onTap: () {
@@ -369,7 +374,7 @@ class DateBase {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    '${myLesson ?? 0} /${allLesson ?? 0}',
+                                    '${finalLesson ?? 0} /${allLesson ?? 0}',
                                     style: TextStyle(
                                       color: Colors.white70,
                                       fontSize: 14,

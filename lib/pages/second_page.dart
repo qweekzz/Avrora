@@ -1,18 +1,15 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 
-import 'package:flutter_app/globals.dart' as globals;
 import 'package:flutter_app/routes/router.gr.dart';
 
-import 'package:gradient_widgets/gradient_widgets.dart';
 import 'dart:ui' as ui;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -26,18 +23,41 @@ class Second extends StatefulWidget {
 }
 
 class _SecondState extends State<Second> {
-  final _controllerNumb = TextEditingController();
+  final _controllerNumb = TextEditingController(text: '+7');
 
-  // _sendPass() {
-  //   print('Код: ' + globals.code.elementAt(globals.randomNumber));
-  //   return print(globals.randomNumber);
+  final _formKey = GlobalKey<FormState>();
+  // String? get _errorText {
+  //   final text = _controllerNumb.value.text;
+
+  //   if (text.isEmpty) {
+  //     return 'Can\'t be empty';
+  //   }
+  //   if (text.toString().trim().length < 18) {
+  //     return 'Too short';
+  //   }
+  //   return null;
   // }
+
+  // void navigate() {
+  //   AutoRouter.of(context).push(
+  //     ConfirmPassRoute(userPhone: _controllerNumb.text),
+  //   );
+  // }
+
+  var text = '';
+  bool checkField = false;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var height1 = size.height;
     var width1 = size.width;
+
+    var maskFormatter = MaskTextInputFormatter(
+      mask: '+7 (###) ###-##-##',
+      type: MaskAutoCompletionType.eager,
+      filter: {"#": RegExp(r'[0-9]')},
+    );
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -69,7 +89,7 @@ class _SecondState extends State<Second> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: height1 / 1.2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -81,8 +101,9 @@ class _SecondState extends State<Second> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(40, 0, 0, 15),
-                                  child: Text(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(40, 0, 0, 15),
+                                  child: const Text(
                                     'Вход по номеру \nтелефона',
                                     style: TextStyle(
                                         color: Colors.white,
@@ -91,8 +112,9 @@ class _SecondState extends State<Second> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(40, 15, 0, 0),
-                                  child: Text(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(40, 15, 0, 0),
+                                  child: const Text(
                                     'Укажите свой номер телефона ниже \nи далее подтвердите его.',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16),
@@ -108,20 +130,50 @@ class _SecondState extends State<Second> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: width1 - 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: TextField(
-                                    controller: _controllerNumb,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Номер телефона',
-                                    ),
-                                  ),
+                                ValueListenableBuilder(
+                                  builder:
+                                      (context, TextEditingValue value, child) {
+                                    text = value.text;
+                                    return Form(
+                                      key: _formKey,
+                                      child: Container(
+                                        width: width1 - 40,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.phone,
+                                          validator: (value) {
+                                            print('$value value');
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Поле не может быть пустым';
+                                            }
+                                            if (value.length < 18) {
+                                              return 'нужно 11 цифр';
+                                            }
+                                          },
+                                          inputFormatters: [maskFormatter],
+                                          controller: _controllerNumb,
+                                          obscureText: false,
+                                          decoration: const InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            // errorText:
+                                            //     checkField ? _errorText : null,
+                                            errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.red)),
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Номер телефона',
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  valueListenable: _controllerNumb,
                                 ),
                               ],
                             ),
@@ -129,7 +181,8 @@ class _SecondState extends State<Second> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(20, 50, 20, 0),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(20, 50, 20, 0),
                                   width: width1 - 40,
                                   decoration: BoxDecoration(
                                     boxShadow: [
@@ -137,30 +190,31 @@ class _SecondState extends State<Second> {
                                         color: Colors.black54.withOpacity(0.3),
                                         spreadRadius: 2,
                                         blurRadius: 5,
-                                        offset: Offset(1, 4),
+                                        offset: const Offset(1, 4),
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(8),
-                                    gradient: LinearGradient(
+                                    gradient: const LinearGradient(
                                       end: Alignment.bottomRight,
                                       begin: Alignment.topLeft,
                                       colors: [
                                         Color.fromARGB(255, 108, 14, 164),
                                         Color.fromARGB(255, 153, 28, 172)
                                       ],
-                                      // tileMode: TileMode.mirror,
                                     ),
                                   ),
-                                  // color: Colors.white,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      AutoRouter.of(context).push(
+                                      if (_formKey.currentState!.validate()) {
+                                        AutoRouter.of(context).push(
                                           ConfirmPassRoute(
-                                              userPhone: _controllerNumb.text));
+                                              userPhone: _controllerNumb.text),
+                                        );
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary: Colors.transparent),
-                                    child: Padding(
+                                    child: const Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 20, 0, 20),
                                       child: Text('Продолжить'),
@@ -186,12 +240,12 @@ class _SecondState extends State<Second> {
                       ),
                       child: IconButton(
                           iconSize: 25,
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           // alignment: Alignment.topLeft,
                           onPressed: () {
                             AutoRouter.of(context).navigateBack();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.close_sharp,
                             color: Color.fromARGB(255, 108, 14, 164),
                           )),
@@ -204,15 +258,26 @@ class _SecondState extends State<Second> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(20, 5, 0, 10),
                     width: width1 / 2 + 80,
-                    child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(primary: Colors.green),
-                        child: Text(
-                          'При входе на ресурс,\nвы принимаете условия доступа',
-                          style: TextStyle(color: Colors.grey),
-                        )),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'При входе на ресурс,\nвы принимаете ',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          TextSpan(
+                            text: 'условия доступа',
+                            style: const TextStyle(color: Colors.blue),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                AutoRouter.of(context).pushNamed('/license');
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               )
@@ -227,7 +292,7 @@ class _SecondState extends State<Second> {
 class MyCustomClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    // Эта переменная определена для лучшего понимания, какое значение указать в методе quadraticBezierTo
+    // Эта переменная для лучшего понимания, какое значение указать в методе quadraticBezierTo
     var controlPoint1 = Offset((size.width / 1) + 30, size.height - 200);
     var controlPoint2 = Offset((size.width / 1) - 180, size.height / 1.1);
     var endPoint = Offset(size.width, size.height - 40);
@@ -262,9 +327,9 @@ class RPSCustomPainter extends CustomPainter {
     paint0.shader = ui.Gradient.linear(
         Offset(size.width * 0.2, size.height * 0.42),
         Offset(size.width, size.height * 0.75), [
-      Color.fromARGB(255, 153, 28, 172),
-      Color.fromARGB(150, 121, 14, 164),
-      Color.fromARGB(0, 108, 14, 164)
+      const Color.fromARGB(255, 153, 28, 172),
+      const Color.fromARGB(150, 121, 14, 164),
+      const Color.fromARGB(0, 108, 14, 164)
     ], [
       0.00,
       0.73,

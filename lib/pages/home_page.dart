@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app/pages/MainHome.dart';
+
 import 'package:flutter_app/routes/router.gr.dart';
 import 'package:flutter_app/services/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +12,7 @@ import 'package:file_picker/file_picker.dart';
 
 import '../services/counterBloc.dart';
 import '../services/database.dart';
-import '../services/storage.dart';
-import '../services/test.dart';
+
 import '../services/auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -43,9 +37,6 @@ class _HomePageState extends State<HomePage> {
   final _controllerClass = TextEditingController();
   final _controllerSchool = TextEditingController();
 
-  // var a = FirebaseAuth.instance.currentUser?.uid;
-  // var tes;
-  // bool bo = tes;
   int _counter = 0;
   void _incrementCounter() {
     setState(() {
@@ -82,7 +73,6 @@ class _HomePageState extends State<HomePage> {
         return bol ? profilePage() : _NullProfile();
       });
 
-  @override
   Widget _input(String text, dynamic inputController) => Container(
         padding: const EdgeInsets.only(bottom: 15),
         child: TextFormField(
@@ -1196,23 +1186,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //СРАБАТЫВАЕТ И ПРИНТ И ФУНКЦИЯ !!!
-    print(DateBase().getAva());
+    DateBase().getAva();
     DateBase().checkUser();
-
-    // void fun() {
-    //   if (bol == true) {
-    //     print('$bol 1');
-    //   } else {
-    //     print('$bol 2');
-    //   }
-    // }
-
-    // setState(() {
-    //   fun();
-    // });
-    // fun();
   }
 }

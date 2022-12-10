@@ -1,19 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:math';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter_app/globals.dart' as globals;
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:auto_route/auto_route.dart';
 
 class ConfirmPass extends StatefulWidget {
   final String userPhone;
 
-  const ConfirmPass({required this.userPhone});
+  const ConfirmPass({Key? key, required this.userPhone}) : super(key: key);
 
   @override
   State<ConfirmPass> createState() => _ConfirmPassState();
@@ -36,59 +31,37 @@ class _ConfirmPassState extends State<ConfirmPass> {
   final node5 = FocusNode();
   final node6 = FocusNode();
 
-  // var random = new Random();
-  // late var randomNumber = random.nextInt(code.length);
-  // late var randomNumberFromList = code.elementAt(randomNumber);
-  // List code = [
-  //   '1234',
-  //   '4636',
-  //   '8563',
-  //   '1204',
-  //   '6538',
-  //   '4723',
-  //   '9597',
-  //   '5645',
-  //   '2952',
-  //   '3907',
-  // ];
-
-  _sendPass() {
-    print('Код: ' + globals.code.elementAt(globals.randomNumber));
-    return print(globals.randomNumber);
-  }
+  // _sendPass() {
+  //   print('Код: ' + globals.code.elementAt(globals.randomNumber));
+  //   return print(globals.randomNumber);
+  // }
 
   _OnChanged1(String $text1) {
-    print($text1);
     node1.nextFocus();
     return $text1;
   }
 
   _OnChanged2(String $text2) {
-    print($text2);
     node2.nextFocus();
     return $text2;
   }
 
   _OnChanged3(String $text3) {
-    print($text3);
     node3.nextFocus();
     return $text3;
   }
 
   _OnChanged4(String $text4) {
-    print($text4);
     node4.nextFocus();
     return $text4;
   }
 
   _OnChanged5(String $text5) {
-    print($text5);
     node5.nextFocus();
     return $text5;
   }
 
   _OnChanged6(String $text6) {
-    print($text6);
     node6.nextFocus();
     return $text6;
   }
@@ -96,7 +69,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var height1 = size.height;
+    // var height1 = size.height;
     var width1 = size.width;
 
     return Scaffold(
@@ -124,7 +97,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                 ),
                 width: 35,
                 height: 35,
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back,
                   size: 20,
                 ),
@@ -138,7 +111,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
               child: Container(
                 color: Colors.white,
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                  margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                   width: width1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,7 +156,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   // height: 88,
                                   margin: const EdgeInsets.only(right: 12),
                                   child: TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 38,
                                     ),
                                     controller: _controller1,
@@ -223,7 +196,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   // height: 88,
                                   margin: const EdgeInsets.only(right: 12),
                                   child: TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 38,
                                     ),
                                     controller: _controller2,
@@ -261,7 +234,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   // height: 88,
                                   margin: const EdgeInsets.only(right: 12),
                                   child: TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 38,
                                     ),
                                     controller: _controller3,
@@ -299,7 +272,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   // height: 88,
                                   margin: const EdgeInsets.only(right: 12),
                                   child: TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 38,
                                     ),
                                     controller: _controller4,
@@ -337,7 +310,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   // height: 88,
                                   margin: const EdgeInsets.only(right: 12),
                                   child: TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 38,
                                     ),
                                     controller: _controller5,
@@ -375,7 +348,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   // height: 88,
                                   margin: const EdgeInsets.only(right: 12),
                                   child: TextField(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 38,
                                     ),
                                     controller: _controller6,
@@ -422,11 +395,11 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                   color: Colors.black54.withOpacity(0.3),
                                   spreadRadius: 2,
                                   blurRadius: 5,
-                                  offset: Offset(1, 4),
+                                  offset: const Offset(1, 4),
                                 )
                               ],
                               borderRadius: BorderRadius.circular(8),
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: [
                                   Color.fromARGB(255, 108, 14, 164),
                                   Color.fromARGB(255, 153, 28, 172)
@@ -447,7 +420,6 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                         _controller5.text +
                                         _controller6.text;
                                   });
-                                  print(all);
                                   await FirebaseAuth.instance
                                       .signInWithCredential(
                                           PhoneAuthProvider.credential(
@@ -456,20 +428,16 @@ class _ConfirmPassState extends State<ConfirmPass> {
                                       .then((value) => {
                                             if (value.user != null)
                                               {
-                                                print(
-                                                    'пользователь вошел в систему 2'),
+                                                debugPrint(
+                                                    'пользователь вошел в систему'),
                                                 AutoRouter.of(context)
                                                     .pushNamed('/')
-                                              }
-                                            else
-                                              {
-                                                print('test поьзователя 2'),
                                               }
                                           });
                                 },
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.transparent),
-                                child: Padding(
+                                child: const Padding(
                                   padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                                   child: Text('Подтвердить код'),
                                 )),
@@ -484,7 +452,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
             Flexible(
                 flex: 3,
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                   width: width1,
                   color: Colors.white,
                   child: Column(
@@ -494,14 +462,12 @@ class _ConfirmPassState extends State<ConfirmPass> {
                       Container(
                         alignment: AlignmentDirectional.topCenter,
                         child: TextButton(
-                            onPressed: () {
-                              _sendPass();
-                            },
+                            onPressed: () {},
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: const [
                                   Text('Отправить код повторно'),
                                   Icon(Icons.replay)
                                 ],
@@ -514,7 +480,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
                         child: TextButton(
                             onPressed: () {},
                             style: TextButton.styleFrom(primary: Colors.green),
-                            child: Text(
+                            child: const Text(
                               'При входе на ресурс,\nвы принимаете условия доступа',
                               style: TextStyle(color: Colors.grey),
                             )),
@@ -530,24 +496,13 @@ class _ConfirmPassState extends State<ConfirmPass> {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: widget.userPhone,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        await FirebaseAuth.instance
-            .signInWithCredential(credential)
-            .then((value) => {
-                  if (value.user != null)
-                    {
-                      print('пользователь вошел в систему'),
-                    }
-                  else
-                    {
-                      print('test поьзователя'),
-                    }
-                });
+        await FirebaseAuth.instance.signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
+          debugPrint('The provided phone number is not valid.');
         }
-        print('ERROR ${e.message}');
+        debugPrint('ERROR ${e.message}');
       },
       codeSent: (String verificationId, int? resendToken) {
         setState(() {
@@ -559,7 +514,7 @@ class _ConfirmPassState extends State<ConfirmPass> {
           _verificationCode = verificationId;
         });
       },
-      timeout: Duration(seconds: 60),
+      timeout: const Duration(seconds: 60),
     );
   }
 
@@ -569,21 +524,3 @@ class _ConfirmPassState extends State<ConfirmPass> {
     super.initState();
   }
 }
-
-
-
-// TextField(
-//   // autofocus: true,
-//   decoration: InputDecoration(
-//     isCollapsed: true,
-//     contentPadding: EdgeInsets.fromLTRB(8, 16, 12, 16),
-//     border: OutlineInputBorder(
-
-//     ),
-//     focusedBorder: OutlineInputBorder(
-//       borderSide: BorderSide(
-//         color: Color.fromARGB(255, 108, 14, 164),
-//       )
-//     ),
-//   ),
-// ),
