@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage> {
     MainHome(),
     // Page 2
     register(context),
-    // _register(context),
     // Page 3
     Select(context)
   ];
@@ -70,6 +69,8 @@ class _HomePageState extends State<HomePage> {
   Widget Select(BuildContext context) => FutureBuilder(
       future: DateBase().checkUser(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        print('${DateBase().checkUser()} PRINT');
+        print('${uID} PRINT2');
         return bol ? profilePage() : _NullProfile();
       });
 

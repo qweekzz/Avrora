@@ -9,11 +9,13 @@ class ContentCourse extends StatefulWidget {
     Key? key,
     @PathParam('id') required this.courseid,
     @PathParam('lesson') required this.lesson,
+    required this.index,
     required this.doc,
   }) : super(key: key);
   final int courseid;
   final String doc;
   final int lesson;
+  final int index;
 
   @override
   State<ContentCourse> createState() => _ContentCourseState();
@@ -45,6 +47,7 @@ class _ContentCourseState extends State<ContentCourse> {
                           stream: DateBase().GetMyCourse(widget.doc),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
+                            print(snapshot);
                             //Исправить (наверное в кеш загрузить)
                             if (ConnectionState.done ==
                                 snapshot.connectionState) {
@@ -102,8 +105,10 @@ class _ContentCourseState extends State<ContentCourse> {
                                                   snapshot.data['lessons']) {
                                                 _newLesson++;
                                               }
-                                              DateBase().updateMyCourse(
-                                                  widget.doc, _newLesson);
+                                              DateBase().updateMyCourse2(
+                                                  widget.index,
+                                                  widget.doc,
+                                                  _newLesson);
 
                                               BlocProvider.of<counterBloc>(
                                                       context)

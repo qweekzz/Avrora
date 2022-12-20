@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/pages/second_page.dart';
 import 'package:flutter_app/pages/confirmPass_page.dart';
 import 'package:flutter_app/pages/reg_page.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_app/pages/singleCourse_page.dart';
 import 'package:flutter_app/pages/ContentCourse_page.dart';
 import 'package:flutter_app/pages/test_page.dart';
 import 'package:flutter_app/pages/license_page.dart';
+import 'package:flutter_app/routes/router.gr.dart';
+import '../services/database.dart';
 
 // class CheckIfBookExists extends AutoRouteGuard {
 //   @override
@@ -44,18 +47,16 @@ class $AppRouter {}
 // class AuthGuard extends AutoRouteGuard {
 //   @override
 //   void onNavigation(NavigationResolver resolver, StackRouter router) {
-//     // final user = Provider.of<User?>(context);
-//     // final bool isLoggedIn = user != null;
-//     // the navigation is paused until resolver.next() is called with either
-//     // true to resume/continue navigation or false to abort navigation
 //     if (1 == 2) {
 //       // if user is authenticated we continue
+//       debugPrint('$a isLoggedIn');
 //       resolver.next(true);
-//       print('isLoggedIn');
+//       print('$a isLoggedIn');
 //     } else {
 //       // we redirect the user to our login page
-//       router.push(HomePageRoute());
-//       print('isLoggedIn2');
+//       debugPrint('$a isLoggedIn2');
+//       router.push(const HomePageRoute());
+//       print('$a isLoggedIn2');
 //     }
 //   }
 // }

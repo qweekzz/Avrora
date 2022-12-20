@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
@@ -233,7 +234,7 @@ class _RegState extends State<Reg> {
                                                     _controllerClass.text),
                                                 phoneNumber: int.parse(
                                                     _controllerNumb.text),
-                                                ava: '',
+                                                ava: 'none',
                                               ),
                                               _controllerBirthday.text,
                                               _controllerBirthday.text,
@@ -242,7 +243,14 @@ class _RegState extends State<Reg> {
                                           AutoRouter.of(context)
                                               .pushNamed('/home');
                                         } else {
-                                          print('validation failed');
+                                          print(
+                                              '${_formKey.currentState!.validate()}');
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                    Text('validation failed')),
+                                          );
                                           // AutoRouter.of(context).pushNamed('/home');
                                         }
                                       },
@@ -264,14 +272,26 @@ class _RegState extends State<Reg> {
                             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                             alignment: AlignmentDirectional.bottomStart,
                             width: width1,
-                            child: TextButton(
-                                onPressed: () {},
-                                style:
-                                    TextButton.styleFrom(primary: Colors.green),
-                                child: const Text(
-                                  'При входе на ресурс,\nвы принимаете условия доступа',
-                                  style: TextStyle(color: Colors.grey),
-                                )),
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text:
+                                        'При входе на ресурс,\nвы принимаете ',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  TextSpan(
+                                    text: 'условия доступа',
+                                    style: const TextStyle(color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        AutoRouter.of(context)
+                                            .pushNamed('/license');
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),

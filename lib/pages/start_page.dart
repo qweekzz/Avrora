@@ -294,7 +294,6 @@ class Start extends StatelessWidget {
                                               .pushNamed('/license');
                                         },
                                     ),
-                                    TextSpan(text: '3'),
                                   ],
                                 ),
                               ),

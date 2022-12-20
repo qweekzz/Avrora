@@ -12,8 +12,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i11;
+import 'package:flutter/cupertino.dart' as _i13;
 import 'package:flutter/material.dart' as _i12;
-import 'package:flutter/src/widgets/framework.dart' as _i13;
 
 import '../pages/confirmPass_page.dart' as _i6;
 import '../pages/ContentCourse_page.dart' as _i8;
@@ -49,6 +49,7 @@ class AppRouter extends _i11.RootStackRouter {
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.SinagleCourse(
+          key: args.key,
           courseid: args.courseid,
           doc: args.doc,
         ),
@@ -82,11 +83,9 @@ class AppRouter extends _i11.RootStackRouter {
       );
     },
     RegRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<RegRouteArgs>(orElse: () => const RegRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.Reg(key: args.key),
+        child: const _i7.Reg(),
       );
     },
     ContentCourseRoute.name: (routeData) {
@@ -94,8 +93,10 @@ class AppRouter extends _i11.RootStackRouter {
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i8.ContentCourse(
+          key: args.key,
           courseid: args.courseid,
           lesson: args.lesson,
+          index: args.index,
           doc: args.doc,
         ),
       );
@@ -191,12 +192,14 @@ class HomePageRoute extends _i11.PageRouteInfo<void> {
 /// [_i3.SinagleCourse]
 class SinagleCourseRoute extends _i11.PageRouteInfo<SinagleCourseRouteArgs> {
   SinagleCourseRoute({
+    _i13.Key? key,
     required int courseid,
     required String doc,
   }) : super(
           SinagleCourseRoute.name,
           path: '/home/:id',
           args: SinagleCourseRouteArgs(
+            key: key,
             courseid: courseid,
             doc: doc,
           ),
@@ -208,9 +211,12 @@ class SinagleCourseRoute extends _i11.PageRouteInfo<SinagleCourseRouteArgs> {
 
 class SinagleCourseRouteArgs {
   const SinagleCourseRouteArgs({
+    this.key,
     required this.courseid,
     required this.doc,
   });
+
+  final _i13.Key? key;
 
   final int courseid;
 
@@ -218,7 +224,7 @@ class SinagleCourseRouteArgs {
 
   @override
   String toString() {
-    return 'SinagleCourseRouteArgs{courseid: $courseid, doc: $doc}';
+    return 'SinagleCourseRouteArgs{key: $key, courseid: $courseid, doc: $doc}';
   }
 }
 
@@ -304,41 +310,33 @@ class ConfirmPassRouteArgs {
 
 /// generated route for
 /// [_i7.Reg]
-class RegRoute extends _i11.PageRouteInfo<RegRouteArgs> {
-  RegRoute({_i13.Key? key})
+class RegRoute extends _i11.PageRouteInfo<void> {
+  const RegRoute()
       : super(
           RegRoute.name,
           path: '/reg',
-          args: RegRouteArgs(key: key),
         );
 
   static const String name = 'RegRoute';
-}
-
-class RegRouteArgs {
-  const RegRouteArgs({this.key});
-
-  final _i13.Key? key;
-
-  @override
-  String toString() {
-    return 'RegRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
 /// [_i8.ContentCourse]
 class ContentCourseRoute extends _i11.PageRouteInfo<ContentCourseRouteArgs> {
   ContentCourseRoute({
+    _i13.Key? key,
     required int courseid,
     required int lesson,
+    required int index,
     required String doc,
   }) : super(
           ContentCourseRoute.name,
           path: '/time/:id/:lesson',
           args: ContentCourseRouteArgs(
+            key: key,
             courseid: courseid,
             lesson: lesson,
+            index: index,
             doc: doc,
           ),
           rawPathParams: {
@@ -352,20 +350,26 @@ class ContentCourseRoute extends _i11.PageRouteInfo<ContentCourseRouteArgs> {
 
 class ContentCourseRouteArgs {
   const ContentCourseRouteArgs({
+    this.key,
     required this.courseid,
     required this.lesson,
+    required this.index,
     required this.doc,
   });
+
+  final _i13.Key? key;
 
   final int courseid;
 
   final int lesson;
 
+  final int index;
+
   final String doc;
 
   @override
   String toString() {
-    return 'ContentCourseRouteArgs{courseid: $courseid, lesson: $lesson, doc: $doc}';
+    return 'ContentCourseRouteArgs{key: $key, courseid: $courseid, lesson: $lesson, index: $index, doc: $doc}';
   }
 }
 

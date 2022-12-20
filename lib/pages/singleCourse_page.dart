@@ -181,7 +181,7 @@ class SinagleCourse extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                     onPressed: () {
-                      AutoRouter.of(context).pushNamed('/time');
+                      AutoRouter.of(context).pushNamed('/home');
                       DateBase().addCourse(doc);
                     },
                     style:

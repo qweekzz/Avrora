@@ -117,10 +117,10 @@ class _MainHomePageState extends State<MainHomePage> {
                                               Text(
                                                 'author : ${data['author']}',
                                                 style: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w300),
+                                                  color: Colors.black87,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
                                               ),
                                               Text(
                                                 data['difficult'],

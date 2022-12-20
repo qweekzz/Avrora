@@ -230,10 +230,33 @@ class DateBase {
     yield data;
   }
 
-  Future updateMyCourse(doc, lesson) async {
-    FirebaseFirestore.instance.collection('courses').doc(doc).set({
-      'myLessons': lesson,
-    }, SetOptions(merge: true));
+  // Future updateMyCourse(doc, lesson) async {
+  //   FirebaseFirestore.instance.collection('users').doc(a).update({
+  //     'CourseID': ([
+  //       {
+  //         'MyLesson': lesson,
+  //         'ID': doc,
+  //       }
+  //     ]),
+
+  //     // 'CourseID.MyLesson': lesson,
+  //   });
+  // }
+
+  // Future updateMyCourse(doc, lesson) async {
+  //   // final query =  FirebaseFirestore.instance.collection('users').where("state", isEqualTo: "CA");
+  //   FirebaseFirestore.instance.collection('users').doc(a).update({
+  //     "CourseID": FieldValue.arrayRemove([]),
+  //   });
+  // }
+
+  Future updateMyCourse2(index, doc, lesson) async {
+    FirebaseFirestore.instance.collection('users').doc(a).update({
+      "CourseID.$index": {
+        'MyLesson': lesson,
+        'ID': doc,
+      }
+    });
   }
 
   Widget GetCourseData(String userField, doc, String text) {
@@ -251,9 +274,37 @@ class DateBase {
   }
 
   Future addCourse(doc) async {
-    return FirebaseFirestore.instance.collection('users').doc(uID!.uid).set({
-      'CourseID': FieldValue.arrayUnion([doc]),
-    }, SetOptions(merge: true));
+    var CourseCount;
+    final docRef = FirebaseFirestore.instance.collection("users").doc(uID!.uid);
+    docRef.get().then(
+      (DocumentSnapshot document) {
+        final data = document.data() as Map<String, dynamic>;
+        CourseCount = data['CourseCount'];
+
+        FirebaseFirestore.instance.collection('users').doc(uID!.uid).set({
+          'CourseID': {
+            CourseCount.toString(): {
+              'MyLesson': 0,
+              'ID': doc,
+            }
+          }
+        }, SetOptions(merge: true));
+
+        FirebaseFirestore.instance.collection('users').doc(a).update({
+          "CourseCount": FieldValue.increment(1),
+        });
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+
+    // return FirebaseFirestore.instance.collection('users').doc(uID!.uid).set({
+    //   'CourseID': {
+    //     '2': {
+    //       'MyLesson': 0,
+    //       'ID': doc,
+    //     }
+    //   }
+    // }, SetOptions(merge: true));
   }
 
   Widget key2() {
@@ -261,148 +312,175 @@ class DateBase {
     Map<String, dynamic>? data2;
     var coll = FirebaseFirestore.instance.collection('courses');
     var user = FirebaseFirestore.instance.collection('users').doc(uID!.uid);
-    return FutureBuilder<DocumentSnapshot>(
-        future: user.get(),
+    return StreamBuilder<DocumentSnapshot>(
+        stream: user.snapshots(),
         builder: (context, snapshot) {
           data = snapshot.data?.data() as Map<String, dynamic>?;
-          print("snapshot ${data?['CourseID']}");
-          if (snapshot.connectionState == ConnectionState.done) {
+          print("snapshot123 ${snapshot.data?.data()}");
+          print('${data?['CourseID']} courseID');
+
+          if (snapshot.hasData) {
             data = snapshot.data?.data() as Map<String, dynamic>?;
-            return ListView.separated(
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                var hz = data?['CourseID'][index];
-                return FutureBuilder<DocumentSnapshot>(
-                  future: coll.doc(hz).get(),
-                  builder: (context, snapshot) {
-                    final data2 =
-                        snapshot.data?.data() as Map<String, dynamic>?;
-                    var docId = (snapshot.data?.id).toString();
-                    var allLesson = data2?['lessons'] ?? 1;
-                    var myLesson = data2?['myLessons'] ?? 1;
-                    var finalLesson = data2?['myLessons'] ?? 1;
-                    var progress = (myLesson / allLesson);
-                    var backImg = data2?['img'] ?? 'sonnic.png';
-                    if (allLesson - 1 == myLesson) {
-                      progress = (myLesson + 1 / allLesson);
-                      finalLesson = myLesson + 1;
-                    }
-                    print('object ${snapshot.data?.id}');
-                    return InkWell(
-                      onTap: () {
-                        AutoRouter.of(context).push(ContentCourseRoute(
-                            courseid: index, doc: docId, lesson: myLesson));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://firebasestorage.googleapis.com/v0/b/avrora-d2ff5.appspot.com/o/avatars%2F$backImg?alt=media&token=3264b4ec-30c0-4aa5-93d8-8ca0b173dd66'),
-                              fit: BoxFit.cover,
-                            )),
+            Map<String, dynamic> courseID =
+                data?['CourseID'] ?? 0 as List<String>;
+            late int courseCount;
+
+            if (courseID == '') {
+              courseCount = 1;
+            } else {
+              courseCount = courseID.length;
+            }
+            print(courseID);
+            print('$courseCount courseCount');
+            if (courseCount != 0) {
+              return ListView.separated(
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                itemCount: courseCount,
+                itemBuilder: (context, index) {
+                  var hz = data?['CourseID'][index.toString()]['ID'];
+                  var myLesson =
+                      data?['CourseID'][index.toString()]['MyLesson'] ?? 1;
+                  return StreamBuilder<DocumentSnapshot>(
+                    stream: coll.doc(hz).snapshots(),
+                    builder: (context, snapshot) {
+                      final data2 =
+                          snapshot.data?.data() as Map<String, dynamic>?;
+                      // var docId = a.toString();
+                      var docId = snapshot.data?.id.toString();
+
+                      // print('object ${a}');
+
+                      var allLesson = data2?['lessons'] ?? 1;
+                      // var myLesson = data2?['myLessons'] ?? 1;
+                      var finalLesson = myLesson ?? 1;
+                      var progress = (myLesson / allLesson);
+                      var backImg = data2?['img'] ?? 'sonnic.png';
+                      if (allLesson - 1 == myLesson) {
+                        progress = (myLesson + 1 / allLesson);
+                        finalLesson = myLesson + 1;
+                      }
+                      return InkWell(
+                        onTap: () {
+                          AutoRouter.of(context).push(ContentCourseRoute(
+                            courseid: index,
+                            doc: docId.toString(),
+                            lesson: myLesson,
+                            index: index,
+                          ));
+                        },
                         child: Container(
-                          padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
-                          decoration: const BoxDecoration(
-                            color: Colors.black45,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.description,
-                                    color: Colors.white70,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '${allLesson ?? 1}',
-                                    style: TextStyle(color: Colors.white70),
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  const Text(
-                                    'уроков',
-                                    style: TextStyle(color: Colors.white70),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    '${data2?['name'] ?? 'noName'}',
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '${data2?['desc'] ?? 'noDesc'}',
-                                    style: const TextStyle(
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/avrora-d2ff5.appspot.com/o/avatars%2F$backImg?alt=media&token=3264b4ec-30c0-4aa5-93d8-8ca0b173dd66'),
+                                fit: BoxFit.cover,
+                              )),
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
+                            decoration: const BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.description,
                                       color: Colors.white70,
-                                      fontSize: 18,
+                                      size: 18,
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 35,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '${finalLesson ?? 0} /${allLesson ?? 0}',
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 14,
+                                    const SizedBox(
+                                      width: 5,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  LinearProgressIndicator(
-                                    minHeight: 7,
-                                    value: progress ?? 0,
-                                    valueColor:
-                                        AlwaysStoppedAnimation(Colors.green),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                            ],
+                                    Text(
+                                      '${allLesson ?? 1}',
+                                      style: TextStyle(color: Colors.white70),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    const Text(
+                                      'уроков',
+                                      style: TextStyle(color: Colors.white70),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${data2?['name'] ?? 'noName'}',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      '${data2?['desc'] ?? 'noDesc'}',
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 18,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 35,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${finalLesson ?? 0} /${allLesson ?? 0}',
+                                      style: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    LinearProgressIndicator(
+                                      minHeight: 7,
+                                      value: progress ?? 0,
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.green),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-            );
+                      );
+                    },
+                  );
+                },
+              );
+            } else {
+              return Text('Пока курсов нет');
+            }
           } else {
             return Text('else');
           }
