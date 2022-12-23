@@ -96,7 +96,7 @@ class AppRouter extends _i11.RootStackRouter {
           key: args.key,
           courseid: args.courseid,
           lesson: args.lesson,
-          index: args.index,
+          allLesson: args.allLesson,
           doc: args.doc,
         ),
       );
@@ -327,7 +327,7 @@ class ContentCourseRoute extends _i11.PageRouteInfo<ContentCourseRouteArgs> {
     _i13.Key? key,
     required int courseid,
     required int lesson,
-    required int index,
+    required int allLesson,
     required String doc,
   }) : super(
           ContentCourseRoute.name,
@@ -336,7 +336,7 @@ class ContentCourseRoute extends _i11.PageRouteInfo<ContentCourseRouteArgs> {
             key: key,
             courseid: courseid,
             lesson: lesson,
-            index: index,
+            allLesson: allLesson,
             doc: doc,
           ),
           rawPathParams: {
@@ -353,7 +353,7 @@ class ContentCourseRouteArgs {
     this.key,
     required this.courseid,
     required this.lesson,
-    required this.index,
+    required this.allLesson,
     required this.doc,
   });
 
@@ -363,13 +363,13 @@ class ContentCourseRouteArgs {
 
   final int lesson;
 
-  final int index;
+  final int allLesson;
 
   final String doc;
 
   @override
   String toString() {
-    return 'ContentCourseRouteArgs{key: $key, courseid: $courseid, lesson: $lesson, index: $index, doc: $doc}';
+    return 'ContentCourseRouteArgs{key: $key, courseid: $courseid, lesson: $lesson, allLesson: $allLesson, doc: $doc}';
   }
 }
 

@@ -230,6 +230,13 @@ class DateBase {
     yield data;
   }
 
+  Stream GetMyCourse2(doc) async* {
+    var collection = FirebaseFirestore.instance.collection('courses').doc(doc);
+    var querySnapshot = await collection.snapshots();
+    // var data = querySnapshot.data();
+    yield querySnapshot;
+  }
+
   // Future updateMyCourse(doc, lesson) async {
   //   FirebaseFirestore.instance.collection('users').doc(a).update({
   //     'CourseID': ([
@@ -366,7 +373,7 @@ class DateBase {
                             courseid: index,
                             doc: docId.toString(),
                             lesson: myLesson,
-                            index: index,
+                            allLesson: allLesson,
                           ));
                         },
                         child: Container(

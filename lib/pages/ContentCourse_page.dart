@@ -1,21 +1,23 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/counterBloc.dart';
 import '../services/database.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 class ContentCourse extends StatefulWidget {
   const ContentCourse({
     Key? key,
     @PathParam('id') required this.courseid,
     @PathParam('lesson') required this.lesson,
-    required this.index,
+    required this.allLesson,
     required this.doc,
   }) : super(key: key);
   final int courseid;
   final String doc;
   final int lesson;
-  final int index;
+  final int allLesson;
 
   @override
   State<ContentCourse> createState() => _ContentCourseState();
@@ -23,6 +25,7 @@ class ContentCourse extends StatefulWidget {
 
 class _ContentCourseState extends State<ContentCourse> {
   late int _newLesson;
+  int _currentPage = 0;
 
   @override
   // ignore: must_call_super
@@ -39,109 +42,85 @@ class _ContentCourseState extends State<ContentCourse> {
             return Scaffold(
               body: Container(
                 margin: const EdgeInsets.fromLTRB(10, 40, 10, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: StreamBuilder(
-                          stream: DateBase().GetMyCourse(widget.doc),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            print(snapshot);
-                            //Исправить (наверное в кеш загрузить)
-                            if (ConnectionState.done ==
-                                snapshot.connectionState) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      DateBase().GetCourseData(
-                                          'name', widget.doc, 'Курс по '),
-                                      Text(
-                                          'Урок № ${(_newLesson + 1).toString()}'),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                          '${snapshot.data['content']['lesson${_newLesson + 1}']}'),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            20, 0, 20, 20),
-                                        height: 50,
-                                        width: 180,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black54
-                                                  .withOpacity(0.3),
-                                              spreadRadius: 2,
-                                              blurRadius: 5,
-                                              offset: const Offset(1, 4),
-                                            )
+                child: StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(a)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      Map<String, dynamic>? data;
+                      data = snapshot.data?.data() as Map<String, dynamic>?;
+                      late int initialPage =
+                          data?['CourseID']['${widget.courseid}']['MyLesson'];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: StreamBuilder(
+                                stream: DateBase().GetMyCourse(widget.doc),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  //Исправить (наверное в кеш загрузить)
+                                  if (ConnectionState.done ==
+                                      snapshot.connectionState) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            DateBase().GetCourseData(
+                                                'name', widget.doc, 'Курс по '),
+                                            Text(
+                                                'Урок № ${(_newLesson + 1).toString()}'),
                                           ],
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              Color.fromARGB(255, 108, 14, 164),
-                                              Color.fromARGB(255, 153, 28, 172)
-                                            ],
-                                            end: Alignment.bottomRight,
-                                            begin: Alignment.topLeft,
-                                          ),
                                         ),
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              if (_newLesson + 1 <
-                                                  snapshot.data['lessons']) {
-                                                _newLesson++;
-                                              }
-                                              DateBase().updateMyCourse2(
-                                                  widget.index,
-                                                  widget.doc,
-                                                  _newLesson);
+                                        Column(
+                                          children: [
+                                            Text(
+                                                '${snapshot.data['content']['lesson${_newLesson + 1}']}'),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            //Что-нибудь придумай (контет нормально запонить)
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return const Text('...');
+                                  }
+                                }),
+                          ),
+                          Column(
+                            children: [
+                              NumberPaginator(
+                                numberPages: widget.allLesson,
+                                initialPage: initialPage,
+                                onPageChange: (int index) {
+                                  _newLesson = index;
+                                  // print(
+                                  //     '${data?['CourseID']['${widget.courseid}']['MyLesson']} !');
+                                  // print('$_newLesson !!!!!!');
+                                  if (_newLesson >= initialPage) {
+                                    DateBase().updateMyCourse2(widget.courseid,
+                                        widget.doc, _newLesson);
+                                  }
 
-                                              BlocProvider.of<counterBloc>(
-                                                      context)
-                                                  .add(counterIncEvent());
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                primary: Colors.transparent),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 15, 0, 15),
-                                              child: Row(
-                                                children: const [
-                                                  Text('Следующий урок'),
-                                                  SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Icon(Icons.navigate_next)
-                                                ],
-                                              ),
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return const Text('...');
-                            }
-                          }),
-                    ),
-                  ],
-                ),
+                                  BlocProvider.of<counterBloc>(context)
+                                      .add(counterIncEvent());
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    }),
               ),
             );
           },
